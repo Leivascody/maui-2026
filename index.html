@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ff7e5f">
+<title>Maui Trip 2026 · Master Itinerary</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Maui 2026">
+
+<style>
+  :root{
+    --sunset1:#ff7e5f; --sunset2:#feb47b; --ocean:#1b9aaa; --deep:#0b6e7c;
+    --sand:#fff6ec; --ink:#243845; --muted:#5d7480; --card:#ffffff;
+    --leaf:#2e9e6b; --coral:#ff5c6e; --gold:#f6b93b; --shadow:0 8px 24px rgba(20,60,80,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--sand); color:var(--ink); line-height:1.55; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:780px;margin:0 auto;padding:0 16px 64px}
+
+  header.hero{background:linear-gradient(160deg,var(--sunset1),var(--sunset2) 55%,var(--ocean));
+    color:#fff; padding:44px 20px 36px; text-align:center; position:relative; overflow:hidden;}
+  header.hero::after{content:"🌴";position:absolute;font-size:120px;opacity:.12;right:-10px;bottom:-30px}
+  header.hero::before{content:"🌺";position:absolute;font-size:90px;opacity:.12;left:-10px;top:-20px}
+  .hero h1{font-size:2.1rem;letter-spacing:.5px;text-shadow:0 2px 8px rgba(0,0,0,.18);position:relative;z-index:1}
+  .hero .sub{font-size:1.05rem;margin-top:6px;opacity:.95;position:relative;z-index:1}
+  .hero .dates{display:inline-block;margin-top:14px;background:rgba(255,255,255,.22);
+    padding:8px 18px;border-radius:999px;font-weight:600;backdrop-filter:blur(4px);position:relative;z-index:1}
+  .hero .count{margin-top:12px;font-size:.95rem;font-weight:700;position:relative;z-index:1}
+
+  nav{position:sticky;top:0;z-index:20;background:rgba(255,246,236,.96);backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(0,0,0,.06);padding:10px 0}
+  nav .navinner{max-width:780px;margin:0 auto;display:flex;gap:8px;overflow-x:auto;padding:0 12px;-webkit-overflow-scrolling:touch}
+  nav a{flex:0 0 auto;text-decoration:none;color:var(--deep);font-weight:600;font-size:.9rem;
+    background:#fff;border:1px solid rgba(0,0,0,.07);padding:7px 14px;border-radius:999px;white-space:nowrap;cursor:pointer}
+  nav a.active{background:var(--sunset1);color:#fff;border-color:var(--sunset1)}
+
+  .wrap > section{margin-top:18px;display:none;animation:fade .25s ease}
+  .wrap > section.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  h2{font-size:1.4rem;display:flex;align-items:center;gap:10px;margin-bottom:14px;color:var(--deep);flex-wrap:wrap}
+  h2 .em{font-size:1.5rem}
+
+  .day{background:var(--card);border-radius:18px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+  .day .top{display:flex;align-items:center;gap:14px;padding:16px 18px;background:linear-gradient(90deg,var(--ocean),var(--deep));color:#fff}
+  .day .daynum{flex:0 0 auto;width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.2);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;line-height:1}
+  .day .daynum small{font-size:.6rem;font-weight:600;opacity:.85}
+  .day .top .meta h3{font-size:1.05rem}
+  .day .top .meta .date{font-size:.82rem;opacity:.9}
+  .day .top .meta .wx{font-size:.8rem;opacity:.95;font-weight:600;display:block;margin-top:2px}
+  .day .body{padding:14px 18px}
+  .row{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed rgba(0,0,0,.08)}
+  .row:last-child{border-bottom:none}
+  .row .ic{flex:0 0 auto;font-size:1.1rem;width:24px;text-align:center}
+  .row .txt{font-size:.95rem}
+  .row .txt b{color:var(--deep)}
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;margin-left:6px;vertical-align:middle}
+  .pill.dinner{background:#ffe7d6;color:#c1521f}
+  .pill.activity{background:#d8f3e6;color:#1d7a51}
+  .pill.note{background:#fff1c2;color:#9a7400}
+  .pill.travel{background:#dceefb;color:#1668a8}
+
+  .wxhead{font-size:.85rem;color:var(--muted);margin-bottom:12px}
+  .wxgrid{display:grid;gap:10px}
+  .wxcard{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:13px 16px;display:flex;align-items:center;gap:14px}
+  .wxcard .em{font-size:2rem;flex:0 0 auto;width:46px;text-align:center}
+  .wxcard .wd{flex:1;min-width:0}
+  .wxcard .wd h4{font-size:1rem;color:var(--deep)}
+  .wxcard .wd p{font-size:.85rem;color:var(--muted)}
+  .wxcard .rain{font-size:.78rem;color:#1668a8;font-weight:600}
+  .wxcard .sun{font-size:.78rem;color:var(--muted);margin-top:2px}
+  .wxcard .tide{font-size:.78rem;color:#0b6e7c;font-weight:600;margin-top:2px}
+  .wxcard .temps{text-align:right;flex:0 0 auto}
+  .wxcard .temps .hi{font-weight:800;font-size:1.15rem;color:var(--ink)}
+  .wxcard .temps .lo{color:var(--muted);font-size:.9rem}
+  .wxnote{font-size:.78rem;color:var(--muted);margin-top:10px;text-align:center}
+
+  .dinners{display:grid;gap:10px}
+  .dinner-card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:13px 16px;
+    display:flex;gap:13px;align-items:flex-start;border-left:5px solid var(--coral)}
+  .dinner-card .n{font-size:1.5rem;flex:0 0 auto}
+  .dinner-card h4{font-size:1rem;color:var(--deep)}
+  .dinner-card p{font-size:.9rem;color:var(--muted);margin-top:2px}
+
+  .tcard{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:15px 17px;margin-bottom:12px}
+  .tcard h4{color:var(--deep);font-size:1.02rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .tline{display:flex;gap:10px;padding:7px 0;font-size:.92rem;border-bottom:1px dashed rgba(0,0,0,.07)}
+  .tline:last-child{border:none}
+  .tline .k{flex:0 0 90px;color:var(--muted);font-weight:600}
+  .tline .v{flex:1}
+  .tcard a{color:var(--ocean);font-weight:600;text-decoration:none}
+  .install{background:linear-gradient(135deg,#fff,#eef6ff);border:1px dashed var(--ocean);border-radius:14px;padding:14px 16px;font-size:.9rem;margin-top:4px}
+  .install b{color:var(--deep)}
+
+  .callout{background:linear-gradient(135deg,#fff,#fff6ec);border:1px dashed var(--sunset1);
+    border-radius:14px;padding:14px 16px;font-size:.92rem;margin-top:10px}
+  .callout b{color:var(--coral)}
+
+  .whobar{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:13px 15px;margin-bottom:12px}
+  .whobar.flash{animation:flash .9s ease}
+  @keyframes flash{0%,100%{box-shadow:var(--shadow)}30%{box-shadow:0 0 0 3px var(--coral)}}
+  .whobar .q{font-size:.78rem;color:var(--muted);font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{font-size:.9rem;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid rgba(0,0,0,.1);background:#fff;color:var(--deep);cursor:pointer}
+  .chip.sel{background:var(--ocean);color:#fff;border-color:var(--ocean)}
+  .wholabel{font-size:.85rem;color:var(--deep);font-weight:600;margin-top:9px}
+  .mineToggle{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:.88rem;color:var(--ink);cursor:pointer}
+  .mineToggle input{width:18px;height:18px}
+  .progress{margin:11px 0 2px}
+  .progress .bar{height:10px;background:#e9eef0;border-radius:999px;overflow:hidden}
+  .progress .fill{height:100%;background:linear-gradient(90deg,var(--leaf),var(--ocean));width:0%;transition:width .3s}
+  .progress .ptxt{font-size:.8rem;color:var(--muted);margin-top:5px;font-weight:600}
+
+  .legend{font-size:.82rem;color:var(--muted);margin-bottom:12px}
+  .cat{background:var(--card);border-radius:14px;box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden}
+  .cat h4{background:#f3fbfa;color:var(--deep);padding:11px 16px;font-size:.95rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid rgba(0,0,0,.05)}
+  .cat ul{list-style:none;padding:6px 16px 12px}
+  .cat li{display:flex;align-items:center;gap:9px;padding:8px 0;font-size:.93rem;border-bottom:1px solid rgba(0,0,0,.04);cursor:pointer}
+  .cat li:last-child{border-bottom:none}
+  .cat li .box{flex:0 0 auto;width:20px;height:20px;border:2px solid var(--ocean);border-radius:5px;position:relative}
+  .cat li .box.on{background:var(--leaf);border-color:var(--leaf)}
+  .cat li .box.on::after{content:"✓";color:#fff;font-size:14px;font-weight:800;position:absolute;top:-1px;left:3px}
+  .cat li.got{opacity:.6}
+  .cat li.got .itemname{text-decoration:line-through}
+  .itemname{flex:1}
+  .by{font-size:.7rem;font-weight:700;color:var(--leaf);white-space:nowrap}
+  .tag{font-size:.66rem;font-weight:700;padding:1px 7px;border-radius:999px}
+  .tag.buy{background:#d8f3e6;color:#1d7a51}
+  .tag.bring{background:#ffe2e6;color:#c2334a}
+  .tag.grocery{background:#fff1c2;color:#9a7400}
+
+  .resvform{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:14px 15px;margin-bottom:14px}
+  .resvform input{width:100%;padding:9px 11px;border:1px solid rgba(0,0,0,.15);border-radius:9px;font-size:.92rem;margin-bottom:8px;font-family:inherit}
+  .resvform .rrow{display:flex;gap:8px}
+  .resvform .rrow input{flex:1}
+  .btn{background:var(--ocean);color:#fff;border:none;border-radius:9px;padding:11px 16px;font-weight:700;font-size:.92rem;cursor:pointer;width:100%}
+  .resv{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:12px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;border-left:5px solid var(--gold)}
+  .resv .ri{flex:1;min-width:0}
+  .resv h4{font-size:1rem;color:var(--deep)}
+  .resv .meta{font-size:.85rem;color:var(--muted);margin-top:2px}
+  .resv .notes{font-size:.85rem;margin-top:4px}
+  .resv .del{flex:0 0 auto;background:none;border:none;color:var(--coral);font-size:1.4rem;cursor:pointer;line-height:1}
+  .resv-empty{font-size:.9rem;color:var(--muted);text-align:center;padding:14px}
+
+  .synctag{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:999px;background:#d8f3e6;color:#1d7a51}
+  .synctag.off{background:#fff1c2;color:#9a7400}
+
+  .wish{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:12px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+  .wish .star{font-size:1.3rem;flex:0 0 auto;filter:grayscale(1);opacity:.45;transition:.2s}
+  .wish.on{outline:2px solid var(--gold)}
+  .wish.on .star{filter:none;opacity:1}
+  .wish h4{font-size:.98rem;color:var(--deep)}
+  .wish p{font-size:.85rem;color:var(--muted);margin-top:2px}
+  .kid{font-size:.64rem;font-weight:700;color:#1d7a51;background:#d8f3e6;padding:1px 7px;border-radius:999px;margin-left:6px;white-space:nowrap}
+
+  footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:40px}
+  @media(max-width:480px){ .hero h1{font-size:1.7rem} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>🌺 Maui 2026 🌴</h1>
+  <div class="sub">The Family Master Itinerary</div>
+  <div class="dates">Fri Jun 12 – Fri Jun 19 · Marriott's Maui Ocean Club</div>
+  <div class="count" id="countdown"></div>
+</header>
+
+<nav id="topnav">
+  <div class="navinner">
+    <a href="#itinerary">🗓️ Itinerary</a>
+    <a href="#weather">🌤️ Weather</a>
+    <a href="#travel">✈️ Travel</a>
+    <a href="#dinners">🍽️ Dinners</a>
+    <a href="#costco">🛒 Food List</a>
+    <a href="#packing">🧳 Packing</a>
+    <a href="#reservations">📅 Reservations</a>
+    <a href="#wishlist">⭐ Wishlist</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- ITINERARY -->
+  <section id="itinerary">
+    <h2><span class="em">🗓️</span> Day by Day</h2>
+
+    <div class="day" data-date="2026-06-12">
+      <div class="top"><div class="daynum">1<small>DAY</small></div>
+        <div class="meta"><h3>Travel & Arrival</h3><div class="date">Friday · June 12</div><span class="wx"></span></div></div>
+      <div class="body">
+        <div class="row"><span class="ic">✈️</span><span class="txt"><b>AS 971 · LGB → OGG</b> <span class="pill travel">Travel</span><br>Depart Long Beach <b>8:16 AM</b> · Arrive Kahului/Maui <b>10:52 AM</b> · nonstop 5h 36m</span></div>
+        <div class="row"><span class="ic">🛒</span><span class="txt"><b>Costco run</b> after you land — see the Food List tab</span></div>
+        <div class="row"><span class="ic">🏨</span><span class="txt">Check in & settle — no cabana today</span></div>
+        <div class="row"><span class="ic">🍽️</span><span class="txt"><b>Dinner — TBD</b> <span class="pill note">Open</span> — arrival day, keep it easy</span></div>
+      </div>
+    </div>
+
+    <div class="day" data-date="2026-06-13">
+      <div class="top"><div class="daynum">2<small>DAY</small></div>
+        <div class="meta"><h3>Pool & Beach</h3><div class="date">Saturday · June 13</div><span class="wx"></span></div></div>
+      <div class="body">
+        <div class="row"><span class="ic">⛱️</span><span class="txt">Cabanas <b>#7–10</b> (Days 2–4)</span></div>
+        <div class="row"><span class="ic">🏖️</span><span class="txt">Good day for a half-day adventure if you want one <span class="pill activity">Optional</span></span></div>
+        <div class="row"><span class="ic">🥩</span><span class="txt"><b>Steak & Chicken Night</b> <span class="pill dinner">Dinner</span> — Nathan grills steak (chimichurri) & chicken · Kristie's rice pilaf · Caesar salad</span></div>
+      </div>
+    </div>
+
+    <div class="day" data-date="2026-06-14">
+      <div class="top"><div class="daynum">3<small>DAY</small></div>
+        <div class="meta"><h3>Pool & Beach</h3><div class="date">Sunday · June 14</div><span class="wx"></span></div></div>
+      <div class="body">
+        <div class="row"><span class="ic">⛱️</span><span class="txt">Cabanas <b>#7–10</b></span></div>
+        <div class="row"><span class="ic">🏊</span><span class="txt">Relax, swim, beach & pool day</span></div>
+        <div class="row"><span class="ic">🌮</span><span class="txt"><b>Mexican Night</b> <span class="pill dinner">Dinner</span> — carnitas, beans & rice, chips & salsa, margaritas</span></div>
+      </div>
+    </div>
+
+    <div class="day" data-date="2026-06-15">
+      <div class="top"><div class="daynum">4<small>DAY</small></div>
+        <div class="meta"><h3>Golf Day</h3><div class="date">Monday · June 15</div><span class="wx"></span></div></div>
+      <div class="body">
+        <div class="row"><span class="ic">⛳</span><span class="txt"><b>Golf — Jim, Nathan & Cody</b> <span class="pill activity">Activity</span> (twilight round; coordinate tee time)</span></div>
+        <div class="row"><span class="ic">⛱️</span><span class="txt">Cabanas <b>#7–10</b> for everyone else</span></div>
+        <div class="row"><span class="ic">❤️</span><span class="txt"><b>Couples' Date Night</b> <span class="pill dinner">Dinner</span> — each couple out · Cody & Jill at the Westin for the ~5-yr anniversary 🥂</span></div>
+      </div>
+    </div>
+
+    <div class="day" data-date="2026-06-16">
+      <div class="top"><div class="daynum">5<small>DAY</small></div>
+        <div class="meta"><h3>Beach Adventure</h3><div class="date">Tuesday · June 16</div><span class="wx"></span></div></div>
+      <div class="body">
+        <div class="row"><span class="ic">🌴</span><span class="txt"><b>Ali'i 3</b> big cabana begins — ours Days 5–7 🎉</span></div>
+        <div class="row"><span class="ic">🏖️</span><span class="txt"><b>Slaughterhouse Beach</b> <span class="pill activity">Activity</span> — sandy, calm water, great for wading with Annabelle</span></div>
+        <div class="row"><span class="ic">🤿</span><span class="txt">Snorkel nearby if conditions are good</span></div>
+        <div class="row"><span class="ic">💆‍♀️</span><span class="txt">Jill — massage at the Westin</span></div>
+        <div class="row"><span class="ic">🌭</span><span class="txt"><b>Burgers & Hot Dogs</b> <span class="pill dinner">Dinner</span> — easy grill night, paper plates</span></div>
+      </div>
+    </div>
+
+    <div class="day" data-date="2026-06-17">
+      <div class="top"><div class="daynum">6<small>DAY</small></div>
+        <div class="meta"><h3>Family Dinner Out</h3><div class="date">Wednesday · June 17</div><span class="wx"></span></div></div>
+      <div class="body">
+        <div class="row"><span class="ic">🌴</span><span class="txt">Ali'i 3 cabana / pool day, leftovers for lunch</span></div>
+        <div class="row"><span class="ic">🍽️</span><span class="txt"><b>Family Dinner Out</b> <span class="pill dinner">Dinner</span> — everyone together (maybe) · pick the spot</span></div>
+      </div>
+    </div>
+
+    <div class="day" data-date="2026-06-18">
+      <div class="top"><div class="daynum">7<small>DAY</small></div>
+        <div class="meta"><h3>Last Full Day</h3><div class="date">Thursday · June 18</div><span class="wx"></span></div></div>
+      <div class="body">
+        <div class="row"><span class="ic">🌅</span><span class="txt">Open beach & Ali'i 3 cabana day — soak it in</span></div>
+        <div class="row"><span class="ic">🍴</span><span class="txt">Use up leftovers & whatever's left in the fridge</span></div>
+        <div class="row"><span class="ic">🧳</span><span class="txt">Start packing, leave the diapers behind <span class="pill note">Note</span></span></div>
+      </div>
+    </div>
+
+    <div class="day" data-date="2026-06-19">
+      <div class="top"><div class="daynum">8<small>DAY</small></div>
+        <div class="meta"><h3>Departure</h3><div class="date">Friday · June 19</div><span class="wx"></span></div></div>
+      <div class="body">
+        <div class="row"><span class="ic">🧳</span><span class="txt">Checkout before <b>10:00 AM</b> — pack up & last beach walk</span></div>
+        <div class="row"><span class="ic">✈️</span><span class="txt"><b>AS 972 · OGG → LGB</b> <span class="pill travel">Travel</span><br>Depart Kahului/Maui <b>12:11 PM</b> · Arrive Long Beach <b>8:16 PM</b> · nonstop 5h 5m</span></div>
+        <div class="row"><span class="ic">🤙</span><span class="txt">Aloha & a hui hou!</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEATHER -->
+  <section id="weather">
+    <h2><span class="em">🌤️</span> Weather, Sun & Tides</h2>
+    <div class="wxhead">Live for Kā‘anapali · sunrise/sunset + tide highs & lows (great for fishing 🎣). <span id="wxStamp"></span></div>
+    <div class="wxgrid" id="wxgrid">
+      <div class="wxcard"><div class="wd"><p>Loading the forecast…</p></div></div>
+    </div>
+    <div class="wxnote">Forecasts this far out are rough — they firm up as the trip nears. Tide times are astronomical predictions (NOAA, Kahului station). Maui June: warm, breezy, mostly sunny with brief passing showers. ☀️🌦️</div>
+  </section>
+
+  <!-- TRAVEL -->
+  <section id="travel">
+    <h2><span class="em">✈️</span> Travel Info</h2>
+
+    <div class="tcard">
+      <h4>✈️ Flights <span class="pill travel">Conf. UIVCQW</span></h4>
+      <div class="tline"><span class="k">Outbound</span><span class="v"><b>Fri Jun 12 · AS 971</b><br>Long Beach (LGB) 8:16 AM → Kahului/Maui (OGG) 10:52 AM<br>Nonstop · 5h 36m · Operated by Hawaiian</span></div>
+      <div class="tline"><span class="k">Return</span><span class="v"><b>Fri Jun 19 · AS 972</b><br>Kahului/Maui (OGG) 12:11 PM → Long Beach (LGB) 8:16 PM<br>Nonstop · 5h 5m · Operated by Hawaiian</span></div>
+      <div class="tline"><span class="k">Seats</span><span class="v">23G Cody · 23J Jillian · 23H Annabelle</span></div>
+      <div class="tline"><span class="k">Tip</span><span class="v">Get to LGB ~2 hrs early (there by ~6:15 AM). Check in with Hawaiian Airlines.</span></div>
+    </div>
+
+    <div class="tcard">
+      <h4>🏨 Resort</h4>
+      <div class="tline"><span class="k">Where</span><span class="v"><b>Marriott's Maui Ocean Club</b> · Molokai Tower</span></div>
+      <div class="tline"><span class="k">Address</span><span class="v"><a href="https://maps.google.com/?q=Marriott%27s+Maui+Ocean+Club,+100+Nohea+Kai+Dr,+Lahaina,+HI+96761">100 Nohea Kai Dr, Lāhainā, HI 96761 ↗</a></span></div>
+      <div class="tline"><span class="k">Front desk</span><span class="v"><a href="tel:+18086678120">(808) 667-8120</a></span></div>
+      <div class="tline"><span class="k">Check-in</span><span class="v">After 4:00 PM</span></div>
+      <div class="tline"><span class="k">Check-out</span><span class="v">Before 10:00 AM</span></div>
+      <div class="tline"><span class="k">Cabanas</span><span class="v">Maureen · #7–10 Days 2–4, Ali'i 3 Days 5–7</span></div>
+    </div>
+
+    <div class="tcard">
+      <h4>🆘 Good to Have</h4>
+      <div class="tline"><span class="k">Emergency</span><span class="v"><a href="tel:911">911</a></span></div>
+      <div class="tline"><span class="k">Hospital</span><span class="v">Maui Memorial Medical Center, Wailuku · <a href="tel:+18082442211">(808) 244-2211</a></span></div>
+      <div class="tline"><span class="k">Airline</span><span class="v">Hawaiian Airlines · <a href="tel:+18003674567">(800) 367-4567</a></span></div>
+      <div class="tline"><span class="k">Time zone</span><span class="v">Hawaii (HST) — <b>3 hrs behind</b> California. No daylight saving.</span></div>
+    </div>
+
+    <div class="callout">
+      <b>Don't forget:</b> ✅ REAL ID or passport · ✅ mineral sunscreen (Maui requires it — bring your own) · ✅ Annabelle's 2 inflatable tubes · 🚫 no life jacket & 🚫 no blowhole · 🧳 leave the diapers at the resort · 🍽️ paper plates so there are no dishes.
+    </div>
+
+    <div class="install">
+      <b>📲 Add this to your home screen</b><br>
+      <b>iPhone:</b> open in Safari → tap Share → "Add to Home Screen."<br>
+      <b>Android:</b> open in Chrome → menu (⋮) → "Add to Home screen."<br>
+      It'll open just like an app, full-screen.
+    </div>
+  </section>
+
+  <!-- DINNERS -->
+  <section id="dinners">
+    <h2><span class="em">🍽️</span> Dinner Schedule</h2>
+    <div class="dinners">
+      <div class="dinner-card"><div class="n">🍽️</div><div><h4>Day 1 — TBD</h4><p>Arrival day · keep it easy (takeout or whatever sounds good)</p></div></div>
+      <div class="dinner-card"><div class="n">🥩</div><div><h4>Steak & Chicken Night — Day 2</h4><p>Nathan grills steak (chimichurri) & chicken · Kristie's rice pilaf · Caesar salad</p></div></div>
+      <div class="dinner-card"><div class="n">🌮</div><div><h4>Mexican Night — Day 3</h4><p>Carnitas, beans & rice, tortilla chips & salsa, margaritas</p></div></div>
+      <div class="dinner-card"><div class="n">❤️</div><div><h4>Couples' Date Night — Day 4</h4><p>Each couple out separately · Cody & Jill at the Westin for the anniversary</p></div></div>
+      <div class="dinner-card"><div class="n">🌭</div><div><h4>Burgers & Hot Dogs — Day 5</h4><p>Hamburgers, hot dogs, all the buns & condiments. Paper plates, no dishes!</p></div></div>
+      <div class="dinner-card"><div class="n">🍽️</div><div><h4>Family Dinner Out — Day 6 (maybe)</h4><p>Everyone together — restaurant TBD</p></div></div>
+    </div>
+    <div class="callout">Also stocked for easy meals: rotisserie chicken, Hawaiian rolls + sliced cheese/ham, Maui onion chips, muffins, yogurts, coffee.</div>
+  </section>
+
+  <!-- FOOD LIST (shared to-do) -->
+  <section id="costco">
+    <h2><span class="em">🛒</span> Master Food List <span class="synctag syncBadge">Connecting…</span></h2>
+
+    <div class="whobar" id="whobar">
+      <div class="q">Log in — who are you?</div>
+      <div class="chips" id="whoChips">
+        <span class="chip" data-name="Greg">Greg</span>
+        <span class="chip" data-name="Cheri">Cheri</span>
+        <span class="chip" data-name="Jim">Jim</span>
+        <span class="chip" data-name="Kristie">Kristie</span>
+        <span class="chip" data-name="Riley">Riley</span>
+        <span class="chip" data-name="Nathan">Nathan</span>
+        <span class="chip" data-name="Cody">Cody</span>
+        <span class="chip" data-name="Jill">Jill</span>
+      </div>
+      <div class="wholabel" id="whoLabel">Tap your name to log in</div>
+      <label class="mineToggle"><input type="checkbox" id="hideDone"> Hide items already grabbed</label>
+      <div class="progress">
+        <div class="bar"><div class="fill" id="progFill"></div></div>
+        <div class="ptxt" id="progTxt">0 of 0 grabbed</div>
+      </div>
+    </div>
+
+    <div class="legend">Tap your name, then tap any item to check it off — <b>everyone sees who grabbed what, live.</b> <span class="tag buy">Costco</span> <span class="tag grocery">Grocery</span> <span class="tag bring">Bring</span></div>
+
+    <div class="cat">
+      <h4>🥩 Proteins & Mains</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Steaks</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Chicken</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Carnitas (Mexican night)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Hamburger patties</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Hot dogs</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Rotisserie chicken</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Sandwich ham</span> <span class="tag grocery">Grocery</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>🍞 Bread, Buns & Sides</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Flour tortillas (big pack)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Hamburger buns</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Hot dog buns</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Hawaiian rolls</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Caesar salad pack</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Rice (pilaf + Mexican)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Refried / black beans</span> <span class="tag buy">Costco</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>🥬 Produce & Fresh</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Limes (margaritas + chimichurri)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Cilantro & parsley (chimichurri)</span> <span class="tag grocery">Grocery</span></li>
+        <li><span class="box"></span><span class="itemname">Yellow onions</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Garlic</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Lettuce & tomato (burgers)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Avocados (guac)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Fresh fruit</span> <span class="tag buy">Costco</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>🧀 Dairy & Fridge</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Shredded cheese</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Sliced cheese</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Milk</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Non-fat yogurts</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Eggs</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Butter</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Sour cream (Mexican)</span> <span class="tag buy">Costco</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>🍿 Snacks & Condiments</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Tortilla chips</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Salsa</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Maui onion chips</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Muffins (split among the group)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">3-pack condiments (ketchup/mustard/mayo)</span> <span class="tag buy">Costco</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>🍹 Drinks</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Margarita mix (premade if available)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Beer</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Coffee</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Bottled water</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Juice / soda</span> <span class="tag buy">Costco</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>🧂 Kitchen & Staples</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Olive / cooking oil</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Salt, pepper & seasoning</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Coffee creamer & sugar</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Paper towels & napkins</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Trash bags</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Dish soap & sponge</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Foil & ziploc bags</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Plastic cups & utensils</span> <span class="tag buy">Costco</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>👶 Annabelle & Household</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Costco pack of pouches (week's supply)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Baby snacks & fruit</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Diapers (leave there)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Paper plates (no dishes!)</span> <span class="tag buy">Costco</span></li>
+        <li><span class="box"></span><span class="itemname">Sunscreen — mineral based</span> <span class="tag bring">Bring</span></li>
+        <li><span class="box"></span><span class="itemname">Aloe / after-sun</span> <span class="tag bring">Bring</span></li>
+        <li><span class="box"></span><span class="itemname">2 inflatable tubes</span> <span class="tag bring">Bring</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PACKING -->
+  <section id="packing">
+    <h2><span class="em">🧳</span> Packing List <span class="synctag syncBadge">Connecting…</span></h2>
+    <div class="whobar">
+      <div class="progress">
+        <div class="bar"><div class="fill" id="packFill"></div></div>
+        <div class="ptxt" id="packTxt">0 of 0 packed</div>
+      </div>
+    </div>
+    <div class="legend">A generic family checklist — tap to check off (shared & synced).</div>
+
+    <div class="cat">
+      <h4>🏖️ Beach & Pool</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Swimsuits</span></li>
+        <li><span class="box"></span><span class="itemname">Rash guards</span></li>
+        <li><span class="box"></span><span class="itemname">Beach towels</span></li>
+        <li><span class="box"></span><span class="itemname">Sunglasses & hats</span></li>
+        <li><span class="box"></span><span class="itemname">Mineral / reef-safe sunscreen</span></li>
+        <li><span class="box"></span><span class="itemname">Sandals / flip-flops</span></li>
+        <li><span class="box"></span><span class="itemname">Snorkel gear</span></li>
+        <li><span class="box"></span><span class="itemname">Dry bag</span></li>
+        <li><span class="box"></span><span class="itemname">Inflatable tubes & beach toys</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>👕 Clothes</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">T-shirts & tank tops</span></li>
+        <li><span class="box"></span><span class="itemname">Shorts</span></li>
+        <li><span class="box"></span><span class="itemname">Evening / dressy outfit (date night)</span></li>
+        <li><span class="box"></span><span class="itemname">Light layer for evenings</span></li>
+        <li><span class="box"></span><span class="itemname">Pajamas</span></li>
+        <li><span class="box"></span><span class="itemname">Underwear & socks</span></li>
+        <li><span class="box"></span><span class="itemname">Light rain jacket</span></li>
+        <li><span class="box"></span><span class="itemname">Workout / golf clothes</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>🧴 Toiletries & Health</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Toothbrush & toothpaste</span></li>
+        <li><span class="box"></span><span class="itemname">Medications & first-aid</span></li>
+        <li><span class="box"></span><span class="itemname">Deodorant & toiletries</span></li>
+        <li><span class="box"></span><span class="itemname">Contacts / glasses</span></li>
+        <li><span class="box"></span><span class="itemname">Aloe / after-sun</span></li>
+        <li><span class="box"></span><span class="itemname">Motion-sickness meds (road to Hana)</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>👶 Annabelle</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Swim diapers</span></li>
+        <li><span class="box"></span><span class="itemname">Baby sunscreen & sun hat</span></li>
+        <li><span class="box"></span><span class="itemname">Stroller / carrier</span></li>
+        <li><span class="box"></span><span class="itemname">Baby monitor</span></li>
+        <li><span class="box"></span><span class="itemname">Favorite toys & comfort items</span></li>
+        <li><span class="box"></span><span class="itemname">Travel snacks</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>🔌 Tech</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">Phone chargers</span></li>
+        <li><span class="box"></span><span class="itemname">Portable battery</span></li>
+        <li><span class="box"></span><span class="itemname">Camera</span></li>
+        <li><span class="box"></span><span class="itemname">Headphones</span></li>
+      </ul>
+    </div>
+
+    <div class="cat">
+      <h4>📄 Documents & Essentials</h4>
+      <ul>
+        <li><span class="box"></span><span class="itemname">REAL ID / passport</span></li>
+        <li><span class="box"></span><span class="itemname">Wallet & cards</span></li>
+        <li><span class="box"></span><span class="itemname">Insurance card</span></li>
+        <li><span class="box"></span><span class="itemname">Reusable water bottles</span></li>
+        <li><span class="box"></span><span class="itemname">Daypack / backpack</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- RESERVATIONS -->
+  <section id="reservations">
+    <h2><span class="em">📅</span> Reservations <span class="synctag syncBadge">Connecting…</span></h2>
+    <div class="legend">Log tee times & dinner reservations as you book them — shared with everyone, live.</div>
+    <div class="resvform">
+      <input id="rTitle" placeholder="What? (e.g., Golf tee time, Merriman's dinner)">
+      <div class="rrow">
+        <input id="rDay" placeholder="Day (e.g., Mon Jun 15)">
+        <input id="rTime" placeholder="Time (e.g., 5:30 PM)">
+      </div>
+      <input id="rNotes" placeholder="Notes (party size, confirmation #)">
+      <button class="btn" id="rAdd">＋ Add reservation</button>
+    </div>
+    <div id="resvList"></div>
+  </section>
+
+  <!-- WISHLIST -->
+  <section id="wishlist">
+    <h2><span class="em">⭐</span> Activity Wishlist</h2>
+    <div class="callout" style="margin-top:0;margin-bottom:14px">Tap the things you'd like to do — your picks are saved on your phone (the ⭐ lights up). Tell Cody your favorites and he'll slot them into the days.</div>
+
+    <div class="wish" data-id="w-slaughterhouse"><div class="star">⭐</div><div><h4>Slaughterhouse Beach <span class="kid">kid-friendly</span></h4><p>Sandy, calm water for wading with Annabelle. <em>(already on Day 5)</em></p></div></div>
+    <div class="wish" data-id="w-blackrock"><div class="star">⭐</div><div><h4>Snorkel at Black Rock (Pu'u Keka'a)</h4><p>Easy, close-by snorkeling right on Kā‘anapali Beach.</p></div></div>
+    <div class="wish" data-id="w-honolua"><div class="star">⭐</div><div><h4>Honolua Bay snorkel</h4><p>Some of Maui's best snorkeling — better for the adults (rocky entry).</p></div></div>
+    <div class="wish" data-id="w-whalers"><div class="star">⭐</div><div><h4>Whalers Village <span class="kid">kid-friendly</span></h4><p>Shops + oceanfront dinner, walkable from the Molokai tower.</p></div></div>
+    <div class="wish" data-id="w-oceancenter"><div class="star">⭐</div><div><h4>Maui Ocean Center (aquarium) <span class="kid">kid-friendly</span></h4><p>Great for Annabelle and a perfect rainy-day backup.</p></div></div>
+    <div class="wish" data-id="w-iao"><div class="star">⭐</div><div><h4>ʻĪao Valley State Park <span class="kid">kid-friendly</span></h4><p>Short, lush, scenic walk — easy with the little one.</p></div></div>
+    <div class="wish" data-id="w-fishing"><div class="star">⭐</div><div><h4>Shore fishing 🎣</h4><p>Check the tide times on the Weather tab — early low/high tides are prime.</p></div></div>
+    <div class="wish" data-id="w-luau"><div class="star">⭐</div><div><h4>Sunset / luau night</h4><p>A classic Maui evening — book ahead if we want it.</p></div></div>
+    <div class="wish" data-id="w-shaveice"><div class="star">⭐</div><div><h4>Shave ice + farmers market <span class="kid">kid-friendly</span></h4><p>Low-key treat run, easy afternoon.</p></div></div>
+    <div class="wish" data-id="w-hana"><div class="star">⭐</div><div><h4>Road to Hana</h4><p>All-day epic drive — beautiful, but long for a toddler. Optional.</p></div></div>
+  </section>
+
+  <footer>
+    🌴 Made with aloha · Maui June 2026<br>
+    <em>Tap a tab up top to view it · tap again to close. Add to your home screen from the Travel tab.</em>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  /* ---------- Tabs ---------- */
+  var links = [].slice.call(document.querySelectorAll('#topnav a'));
+  var nav = document.getElementById('topnav');
+  var sections = {};
+  function clearAll(){
+    links.forEach(function(x){x.classList.remove('active');});
+    Object.keys(sections).forEach(function(k){sections[k].classList.remove('active');});
+  }
+  links.forEach(function(a){
+    var id = a.getAttribute('href').slice(1);
+    sections[id] = document.getElementById(id);
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var wasActive = a.classList.contains('active');
+      clearAll();
+      if(!wasActive){ a.classList.add('active'); sections[id].classList.add('active'); nav.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+  var def = document.querySelector('#topnav a[href="#itinerary"]');
+  if(def){ def.classList.add('active'); sections['itinerary'].classList.add('active'); }
+
+  /* ---------- helpers ---------- */
+  function load(k){ try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch(e){ return {}; } }
+  function save(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+  function noop(){}
+  function esc(s){ return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  /* ---------- Countdown ---------- */
+  try {
+    var trip = new Date('2026-06-12T08:16:00-07:00');
+    var d2 = Math.ceil((trip - new Date())/(1000*60*60*24));
+    var cel = document.getElementById('countdown');
+    if(cel){ cel.textContent = d2>1 ? ('🌅 '+d2+' days to go!') : (d2===1?'🌅 1 day to go!':(d2===0?'🌴 Aloha — it’s trip day!':'🌴 Hope you’re having a blast!')); }
+  } catch(e){}
+
+  /* ---------- Weather + Sun + Tides ---------- */
+  var WX='maui-wx-v1', TIDEK='maui-tide-v1', TRIP_START='2026-06-12', TRIP_END='2026-06-19';
+  var tideMap={};
+  function wmo(c){
+    var m={0:['☀️','Clear & sunny'],1:['🌤️','Mostly sunny'],2:['⛅','Partly cloudy'],3:['☁️','Cloudy'],
+    45:['🌫️','Fog'],48:['🌫️','Fog'],51:['🌦️','Light drizzle'],53:['🌦️','Drizzle'],55:['🌦️','Drizzle'],
+    61:['🌧️','Light rain'],63:['🌧️','Rain'],65:['🌧️','Heavy rain'],
+    80:['🌦️','Passing showers'],81:['🌦️','Showers'],82:['⛈️','Heavy showers'],
+    95:['⛈️','Thunderstorms'],96:['⛈️','Thunderstorms'],99:['⛈️','Thunderstorms']};
+    return {e:(m[c]||['🌴','—'])[0], l:(m[c]||['','—'])[1]};
+  }
+  function fmtClock(hhmm){ var p=hhmm.split(':'); var h=+p[0], m=p[1]; var ap=h<12?'a':'p'; h=h%12; if(h===0)h=12; return h+':'+m+ap; }
+  function fmtDay(iso){ return new Date(iso+'T12:00:00').toLocaleDateString('en-US',{weekday:'long', month:'short', day:'numeric'}); }
+  function tideStr(date){
+    var arr=tideMap[date]; if(!arr||!arr.length) return '';
+    return '🎣 ' + arr.map(function(x){ return x.type+' '+fmtClock(x.time); }).join(' · ');
+  }
+  function renderWeather(d){
+    var grid=document.getElementById('wxgrid'); if(!grid||!d||!d.daily) return;
+    grid.innerHTML=''; var t=d.daily.time, any=false;
+    for(var i=0;i<t.length;i++){
+      if(t[i]<TRIP_START||t[i]>TRIP_END) continue; any=true;
+      var info=wmo(d.daily.weather_code[i]);
+      var hi=Math.round(d.daily.temperature_2m_max[i]), lo=Math.round(d.daily.temperature_2m_min[i]);
+      var rain=d.daily.precipitation_probability_max[i];
+      var sr=d.daily.sunrise?d.daily.sunrise[i].split('T')[1]:null, ss=d.daily.sunset?d.daily.sunset[i].split('T')[1]:null;
+      var sun = sr&&ss ? ('🌅 '+fmtClock(sr)+' · 🌇 '+fmtClock(ss)) : '';
+      var tide = tideStr(t[i]);
+      var card=document.createElement('div'); card.className='wxcard';
+      card.innerHTML='<div class="em">'+info.e+'</div><div class="wd"><h4>'+fmtDay(t[i])+'</h4>'+
+        '<p>'+info.l+' · <span class="rain">💧 '+(rain==null?'–':rain+'%')+'</span></p>'+
+        (sun?'<p class="sun">'+sun+'</p>':'')+
+        (tide?'<p class="tide">'+tide+'</p>':'')+
+        '</div><div class="temps"><div class="hi">'+hi+'°</div><div class="lo">'+lo+'°</div></div>';
+      grid.appendChild(card);
+      var badge=document.querySelector('.day[data-date="'+t[i]+'"] .wx');
+      if(badge){ badge.textContent=info.e+' '+hi+'°/'+lo+'°'+(rain!=null?' · '+rain+'%💧':''); }
+    }
+    if(!any){ grid.innerHTML='<div class="wxcard"><div class="wd"><p>Forecast not available yet for these dates — check back closer to the trip.</p></div></div>'; }
+    var stamp=document.getElementById('wxStamp');
+    if(stamp) stamp.textContent='· Updated '+new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  }
+  function loadTides(){
+    var cached=localStorage.getItem(TIDEK); if(cached){ try{ tideMap=JSON.parse(cached).d||{}; }catch(e){} }
+    var url='https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=maui_trip_2026&datum=MLLW&station=1615680&time_zone=lst_ldt&interval=hilo&units=english&format=json&begin_date=20260612&end_date=20260619';
+    return fetch(url).then(function(r){return r.json();}).then(function(j){
+      var m={}; (j.predictions||[]).forEach(function(p){ var parts=p.t.split(' '); (m[parts[0]]=m[parts[0]]||[]).push({type:p.type,time:parts[1]}); });
+      if(Object.keys(m).length){ tideMap=m; try{ localStorage.setItem(TIDEK, JSON.stringify({d:m})); }catch(e){} }
+    }).catch(noop);
+  }
+  function loadWeather(){
+    var cached=localStorage.getItem(WX); if(cached){ try{ renderWeather(JSON.parse(cached).d); }catch(e){} }
+    var url='https://api.open-meteo.com/v1/forecast?latitude=20.926&longitude=-156.694&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&temperature_unit=fahrenheit&timezone=Pacific%2FHonolulu&forecast_days=16';
+    fetch(url).then(function(r){return r.json();}).then(function(d){
+      try{ localStorage.setItem(WX, JSON.stringify({t:Date.now(),d:d})); }catch(e){}
+      renderWeather(d);
+    }).catch(function(){
+      if(!cached){ var g=document.getElementById('wxgrid'); if(g) g.innerHTML='<div class="wxcard"><div class="wd"><p>Couldn\'t load the forecast — check your connection and reload.</p></div></div>'; }
+    });
+  }
+  loadTides().then(loadWeather, loadWeather);
+
+  /* ---------- Live sync (Supabase) ---------- */
+  var SUPA_URL='https://fwlvucntvapfbntznojc.supabase.co';
+  var SUPA_KEY='sb_publishable_0zVvzBrwRfKJlAj8qOaJpg_bqNA1xI8';
+  var sb=null;
+  try { if(window.supabase && window.supabase.createClient){ sb=window.supabase.createClient(SUPA_URL,SUPA_KEY); } } catch(e){}
+  function setSync(on){ [].slice.call(document.querySelectorAll('.syncBadge')).forEach(function(b){ b.textContent= on?'🟢 Live sync on':'🟡 Saved on this phone'; b.classList.toggle('off',!on); }); }
+  setSync(false);
+
+  var CCACHE='maui-checks-cache-v1';
+  function cacheAll(){ return load(CCACHE); }
+  function cacheSet(list,id,on,name){ var c=cacheAll(); c[list]=c[list]||{}; if(on){ c[list][id]=name||true; } else { delete c[list][id]; } save(CCACHE,c); }
+  function whoNow(){ return localStorage.getItem('maui-who-v1')||''; }
+
+  function slug(prefix,txt){ return prefix+txt.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+  function wire(sectionId, list, prefix){
+    var lis=[].slice.call(document.querySelectorAll('#'+sectionId+' .cat li'));
+    lis.forEach(function(li){
+      li.dataset.list=list; li.dataset.id=slug(prefix, li.querySelector('.itemname').textContent);
+      var by=document.createElement('span'); by.className='by'; li.appendChild(by);
+      li.addEventListener('click', function(){ onToggle(li); });
+    });
+    return lis;
+  }
+  var foodItems = wire('costco','food','i-');
+  var packItems = wire('packing','packing','p-');
+
+  function findLi(list,id){ var sec=(list==='food')?'costco':'packing'; return document.querySelector('#'+sec+' li[data-id="'+id+'"]'); }
+  function applyUI(list,id,on,name){
+    var li=findLi(list,id); if(!li) return;
+    li.classList.toggle('got',on);
+    li.querySelector('.box').classList.toggle('on',on);
+    var by=li.querySelector('.by'); if(by) by.textContent = (on && name) ? ('✓ '+name) : '';
+    cacheSet(list,id,on,name);
+    if(list==='food') updateFood(); else updatePack();
+  }
+  function onToggle(li){
+    var on=!li.classList.contains('got');
+    var who=whoNow();
+    if(on && !who && li.dataset.list==='food'){ var bar=document.getElementById('whobar'); if(bar){ bar.classList.remove('flash'); void bar.offsetWidth; bar.classList.add('flash'); } var lb=document.getElementById('whoLabel'); if(lb){ lb.textContent='👆 Tap your name first so others know who grabbed it'; } return; }
+    applyUI(li.dataset.list, li.dataset.id, on, who);
+    if(sb){
+      if(on){ sb.from('maui_checks').upsert({list:li.dataset.list,item_id:li.dataset.id,by_name:who},{onConflict:'list,item_id'}).then(noop,noop); }
+      else { sb.from('maui_checks').delete().match({list:li.dataset.list,item_id:li.dataset.id}).then(noop,noop); }
+    }
+  }
+
+  /* init from local cache for instant paint */
+  (function(){ var c=cacheAll(); ['food','packing'].forEach(function(list){ var m=c[list]||{}; Object.keys(m).forEach(function(id){ applyUI(list,id,true, m[id]===true?'':m[id]); }); }); })();
+
+  /* login chips */
+  var chips=[].slice.call(document.querySelectorAll('#whoChips .chip'));
+  function refreshChips(){ var w=whoNow(); chips.forEach(function(c){ c.classList.toggle('sel', c.dataset.name===w); }); var lb=document.getElementById('whoLabel'); if(lb) lb.textContent = w ? ('✅ Logged in as '+w) : 'Tap your name to log in'; }
+  chips.forEach(function(c){ c.addEventListener('click', function(){ localStorage.setItem('maui-who-v1', c.dataset.name); refreshChips(); }); });
+  refreshChips();
+
+  /* hide done toggle (food) */
+  var hideBox=document.getElementById('hideDone');
+  if(hideBox){ hideBox.checked = localStorage.getItem('maui-hide-food')==='1'; hideBox.addEventListener('change', function(){ localStorage.setItem('maui-hide-food', hideBox.checked?'1':'0'); updateFood(); }); }
+
+  function updateFood(){
+    var done=foodItems.filter(function(li){return li.classList.contains('got');}).length;
+    var total=foodItems.length, pct=total?Math.round(done/total*100):0;
+    var f=document.getElementById('progFill'); if(f) f.style.width=pct+'%';
+    var t=document.getElementById('progTxt'); if(t) t.textContent=done+' of '+total+' grabbed'+(total&&done===total?' 🎉':'');
+    var hide=hideBox&&hideBox.checked;
+    foodItems.forEach(function(li){ li.style.display=(hide&&li.classList.contains('got'))?'none':''; });
+  }
+  function updatePack(){
+    var done=packItems.filter(function(li){return li.classList.contains('got');}).length;
+    var total=packItems.length, pct=total?Math.round(done/total*100):0;
+    var f=document.getElementById('packFill'); if(f) f.style.width=pct+'%';
+    var t=document.getElementById('packTxt'); if(t) t.textContent=done+' of '+total+' packed'+(total&&done===total?' 🎉':'');
+  }
+  updateFood(); updatePack();
+
+  /* ---------- Reservations ---------- */
+  var RCACHE='maui-resv-cache-v1';
+  function resvGet(){ var o=load(RCACHE); return o.list||[]; }
+  function resvSave(arr){ save(RCACHE,{list:arr}); }
+  function renderResv(arr){
+    var box=document.getElementById('resvList'); if(!box) return;
+    if(!arr||!arr.length){ box.innerHTML='<div class="resv-empty">No reservations yet — add the golf tee time or a dinner above.</div>'; return; }
+    box.innerHTML='';
+    arr.forEach(function(r){
+      var meta=[r.day_label,r.time_label].filter(Boolean).join(' · ');
+      var el=document.createElement('div'); el.className='resv';
+      el.innerHTML='<div class="ri"><h4>'+esc(r.title)+'</h4>'+(meta?'<div class="meta">'+esc(meta)+'</div>':'')+(r.notes?'<div class="notes">'+esc(r.notes)+'</div>':'')+'</div><button class="del" aria-label="Delete">×</button>';
+      el.querySelector('.del').addEventListener('click', function(){ delResv(r); });
+      box.appendChild(el);
+    });
+  }
+  function loadResv(){
+    if(sb){ sb.from('maui_reservations').select('*').order('created_at').then(function(res){ var d=res.data||[]; renderResv(d); resvSave(d); }, function(){ renderResv(resvGet()); }); }
+    else { renderResv(resvGet()); }
+  }
+  function addResv(){
+    var title=document.getElementById('rTitle').value.trim();
+    if(!title){ document.getElementById('rTitle').focus(); return; }
+    var row={ title:title, day_label:document.getElementById('rDay').value.trim(), time_label:document.getElementById('rTime').value.trim(), notes:document.getElementById('rNotes').value.trim() };
+    document.getElementById('rTitle').value=''; document.getElementById('rDay').value=''; document.getElementById('rTime').value=''; document.getElementById('rNotes').value='';
+    if(sb){ sb.from('maui_reservations').insert(row).then(function(){ loadResv(); }, noop); }
+    else { var arr=resvGet(); row.id='local-'+Date.now(); arr.push(row); resvSave(arr); renderResv(arr); }
+  }
+  function delResv(r){
+    if(sb && r.id && String(r.id).indexOf('local-')!==0){ sb.from('maui_reservations').delete().eq('id', r.id).then(function(){ loadResv(); }, noop); }
+    else { var arr=resvGet().filter(function(x){ return x.id!==r.id; }); resvSave(arr); renderResv(arr); }
+  }
+  var addBtn=document.getElementById('rAdd'); if(addBtn) addBtn.addEventListener('click', addResv);
+
+  /* ---------- Realtime + initial server reconcile ---------- */
+  if(sb){
+    sb.from('maui_checks').select('*').then(function(res){
+      var rows=res.data||[]; var present={}; rows.forEach(function(r){ present[r.list+'|'+r.item_id]=r.by_name||''; });
+      foodItems.concat(packItems).forEach(function(li){
+        var key=li.dataset.list+'|'+li.dataset.id;
+        if(present.hasOwnProperty(key)){ applyUI(li.dataset.list, li.dataset.id, true, present[key]); }
+        else { applyUI(li.dataset.list, li.dataset.id, false, ''); }
+      });
+    }, noop);
+    loadResv();
+    try {
+      sb.channel('maui-rt')
+        .on('postgres_changes', {event:'*', schema:'public', table:'maui_checks'}, function(p){
+          if(p.eventType==='DELETE'){ var o=p.old||{}; if(o.list) applyUI(o.list, o.item_id, false, ''); }
+          else { var n=p.new||{}; applyUI(n.list, n.item_id, true, n.by_name||''); }
+        })
+        .on('postgres_changes', {event:'*', schema:'public', table:'maui_reservations'}, function(){ loadResv(); })
+        .subscribe(function(status){ setSync(status==='SUBSCRIBED'); });
+    } catch(e){ setSync(false); }
+  } else {
+    loadResv();
+  }
+
+  /* ---------- Wishlist (personal) ---------- */
+  var WL='maui-wish-v1'; var wishes=load(WL);
+  [].slice.call(document.querySelectorAll('#wishlist .wish')).forEach(function(w){
+    var id=w.dataset.id; if(wishes[id]) w.classList.add('on');
+    w.addEventListener('click', function(){ var on=!w.classList.contains('on'); w.classList.toggle('on',on); if(on){wishes[id]=true;}else{delete wishes[id];} save(WL,wishes); });
+  });
+})();
+</script>
+</body>
+</html>
