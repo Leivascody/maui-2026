@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#ff7e5f">
-<title>Maui Trip 2026 · Master Itinerary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ff6b5e">
+<title>Maui 2026 · Family Trip HQ</title>
 
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -14,182 +14,330 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Maui 2026">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+
 <style>
   :root{
-    --sunset1:#ff7e5f; --sunset2:#feb47b; --ocean:#1b9aaa; --deep:#0b6e7c;
-    --sand:#fff6ec; --ink:#243845; --muted:#5d7480; --card:#ffffff;
-    --leaf:#2e9e6b; --coral:#ff5c6e; --gold:#f6b93b; --shadow:0 8px 24px rgba(20,60,80,.12);
+    --sunset1:#ff6b5e; --sunset2:#ffb56b; --ocean:#0fa3b1; --deep:#0b6e7c;
+    --sand:#fff7ee; --ink:#22333e; --muted:#5d7480; --card:#ffffff; --card2:#f4fbfa;
+    --leaf:#2e9e6b; --coral:#ff5c6e; --gold:#f6b93b; --lav:#8c7ae6;
+    --shadow:0 10px 30px rgba(20,60,80,.12);
+    --line:rgba(0,0,0,.07); --dline:rgba(0,0,0,.08); --chipbg:#ffffff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --sand:#0d161c; --ink:#e8f1f4; --muted:#93aab4; --card:#16242c; --card2:#13303a;
+      --shadow:0 10px 30px rgba(0,0,0,.45); --line:rgba(255,255,255,.09); --dline:rgba(255,255,255,.12);
+      --chipbg:#1b2c35;
+    }
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     background:var(--sand); color:var(--ink); line-height:1.55; -webkit-font-smoothing:antialiased;}
-  .wrap{max-width:780px;margin:0 auto;padding:0 16px 64px}
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif}
+  .wrap{max-width:780px;margin:0 auto;padding:0 16px calc(64px + env(safe-area-inset-bottom))}
 
-  header.hero{background:linear-gradient(160deg,var(--sunset1),var(--sunset2) 55%,var(--ocean));
-    color:#fff; padding:44px 20px 36px; text-align:center; position:relative; overflow:hidden;}
-  header.hero::after{content:"🌴";position:absolute;font-size:120px;opacity:.12;right:-10px;bottom:-30px}
-  header.hero::before{content:"🌺";position:absolute;font-size:90px;opacity:.12;left:-10px;top:-20px}
-  .hero h1{font-size:2.1rem;letter-spacing:.5px;text-shadow:0 2px 8px rgba(0,0,0,.18);position:relative;z-index:1}
-  .hero .sub{font-size:1.05rem;margin-top:6px;opacity:.95;position:relative;z-index:1}
-  .hero .dates{display:inline-block;margin-top:14px;background:rgba(255,255,255,.22);
-    padding:8px 18px;border-radius:999px;font-weight:600;backdrop-filter:blur(4px);position:relative;z-index:1}
-  .hero .count{margin-top:12px;font-size:.95rem;font-weight:700;position:relative;z-index:1}
+  /* ---------- HERO ---------- */
+  header.hero{position:relative;overflow:hidden;color:#fff;text-align:center;
+    padding:calc(46px + env(safe-area-inset-top)) 20px 0;
+    background:linear-gradient(180deg,#2b1055 -30%,#7a2e6f 8%,#ff6b5e 45%,#ffb56b 78%,#ffd9a0 100%);}
+  .sun{position:absolute;left:50%;top:118px;transform:translateX(-50%);width:120px;height:120px;border-radius:50%;
+    background:radial-gradient(circle,#fff7d6 0%,#ffd98a 45%,rgba(255,217,138,0) 72%);
+    filter:blur(2px);animation:sunpulse 6s ease-in-out infinite;pointer-events:none}
+  @keyframes sunpulse{0%,100%{opacity:.85;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.08)}}
+  .palm{position:absolute;font-size:84px;bottom:34px;opacity:.5;pointer-events:none;animation:sway 7s ease-in-out infinite;transform-origin:bottom center;text-shadow:0 2px 4px rgba(0,0,0,.25)}
+  .palm.l{left:-12px}.palm.r{right:-12px;animation-delay:-3.5s}
+  @keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+  .hero h1{font-size:2.4rem;font-weight:800;letter-spacing:.5px;text-shadow:0 3px 14px rgba(60,10,40,.35);position:relative;z-index:1}
+  .hero .sub{font-size:1.02rem;margin-top:4px;opacity:.96;position:relative;z-index:1;font-weight:600}
+  .hero .dates{display:inline-block;margin-top:12px;background:rgba(255,255,255,.22);
+    padding:7px 18px;border-radius:999px;font-weight:700;font-size:.92rem;backdrop-filter:blur(6px);position:relative;z-index:1}
+  .hero .count{margin:12px 0 6px;font-size:1rem;font-weight:800;position:relative;z-index:1;text-shadow:0 2px 8px rgba(60,10,40,.3)}
+  .whochip{position:absolute;top:calc(12px + env(safe-area-inset-top));right:12px;z-index:3;
+    background:rgba(255,255,255,.25);backdrop-filter:blur(8px);color:#fff;border:none;border-radius:999px;
+    padding:7px 14px;font-weight:700;font-size:.82rem;cursor:pointer;font-family:inherit}
+  .waves{display:block;width:100%;height:54px;position:relative;z-index:1;margin-top:8px}
+  .waves .w1{animation:drift 9s linear infinite}
+  .waves .w2{animation:drift 14s linear infinite reverse;opacity:.6}
+  @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-140px)}}
 
-  nav{position:sticky;top:0;z-index:20;background:rgba(255,246,236,.96);backdrop-filter:blur(8px);
-    border-bottom:1px solid rgba(0,0,0,.06);padding:10px 0}
-  nav .navinner{max-width:780px;margin:0 auto;display:flex;gap:8px;overflow-x:auto;padding:0 12px;-webkit-overflow-scrolling:touch}
-  nav a{flex:0 0 auto;text-decoration:none;color:var(--deep);font-weight:600;font-size:.9rem;
-    background:#fff;border:1px solid rgba(0,0,0,.07);padding:7px 14px;border-radius:999px;white-space:nowrap;cursor:pointer}
-  nav a.active{background:var(--sunset1);color:#fff;border-color:var(--sunset1)}
+  /* ---------- NAV ---------- */
+  nav{position:sticky;top:0;z-index:600;background:color-mix(in srgb,var(--sand) 92%,transparent);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);padding:10px 0}
+  nav .navinner{max-width:780px;margin:0 auto;display:flex;gap:8px;overflow-x:auto;padding:0 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  nav .navinner::-webkit-scrollbar{display:none}
+  nav a{flex:0 0 auto;text-decoration:none;color:var(--deep);font-weight:700;font-size:.88rem;
+    background:var(--chipbg);border:1px solid var(--line);padding:8px 15px;border-radius:999px;white-space:nowrap;cursor:pointer;
+    transition:transform .15s, background .2s}
+  nav a:active{transform:scale(.94)}
+  nav a.active{background:linear-gradient(135deg,var(--sunset1),var(--sunset2));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(255,107,94,.4)}
+  @media (prefers-color-scheme: dark){ nav a{color:#9fd4dc} }
 
-  .wrap > section{margin-top:18px;display:none;animation:fade .25s ease}
+  .wrap > section{margin-top:18px;display:none;animation:fadeup .3s cubic-bezier(.2,.8,.3,1)}
   .wrap > section.active{display:block}
-  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-  h2{font-size:1.4rem;display:flex;align-items:center;gap:10px;margin-bottom:14px;color:var(--deep);flex-wrap:wrap}
+  h2{font-size:1.45rem;display:flex;align-items:center;gap:10px;margin-bottom:14px;color:var(--deep);flex-wrap:wrap}
+  @media (prefers-color-scheme: dark){ h2{color:#7fd1da} }
   h2 .em{font-size:1.5rem}
 
-  .day{background:var(--card);border-radius:18px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
-  .day .top{display:flex;align-items:center;gap:14px;padding:16px 18px;background:linear-gradient(90deg,var(--ocean),var(--deep));color:#fff}
-  .day .daynum{flex:0 0 auto;width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.2);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;line-height:1}
-  .day .daynum small{font-size:.6rem;font-weight:600;opacity:.85}
-  .day .top .meta h3{font-size:1.05rem}
-  .day .top .meta .date{font-size:.82rem;opacity:.9}
-  .day .top .meta .wx{font-size:.8rem;opacity:.95;font-weight:600;display:block;margin-top:2px}
+  /* ---------- TODAY ---------- */
+  .tdhero{border-radius:22px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px;color:#fff;
+    background:linear-gradient(135deg,var(--ocean),var(--deep) 60%,#08454f);position:relative}
+  .tdhero::after{content:"🌺";position:absolute;right:-14px;bottom:-22px;font-size:110px;opacity:.13;pointer-events:none}
+  .tdhero .pad{padding:22px 22px 20px;position:relative;z-index:1}
+  .tdhero .kick{font-size:.78rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;opacity:.85}
+  .tdhero h3{font-family:'Fraunces',serif;font-size:1.7rem;margin-top:4px;line-height:1.2}
+  .tdhero .tdsub{font-size:.94rem;opacity:.92;margin-top:4px;font-weight:600}
+  .tdhero .bignum{font-family:'Fraunces',serif;font-size:4.4rem;font-weight:800;line-height:1;margin:8px 0 2px;text-shadow:0 4px 18px rgba(0,0,0,.25)}
+  .tdchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .tdchip{background:rgba(255,255,255,.18);backdrop-filter:blur(4px);border-radius:999px;padding:6px 13px;font-size:.82rem;font-weight:700}
+  .tdcard{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:16px 18px;margin-bottom:13px}
+  .tdcard h4{color:var(--deep);font-size:1.02rem;margin-bottom:8px;display:flex;align-items:center;gap:8px;font-family:'Fraunces',serif}
+  @media (prefers-color-scheme: dark){ .tdcard h4{color:#7fd1da} }
+  .tonight{border-left:5px solid var(--coral)}
+  .miniprog{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px dashed var(--dline)}
+  .miniprog:last-child{border:none}
+  .miniprog .mlabel{flex:0 0 110px;font-size:.88rem;font-weight:700}
+  .miniprog .bar{flex:1;height:9px;background:var(--line);border-radius:999px;overflow:hidden}
+  .miniprog .fill{height:100%;background:linear-gradient(90deg,var(--leaf),var(--ocean));transition:width .4s}
+  .miniprog .pct{flex:0 0 auto;font-size:.8rem;font-weight:800;color:var(--muted)}
+  .feed{max-height:340px;overflow-y:auto}
+  .feeditem{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--dline);font-size:.9rem;align-items:flex-start;animation:fadeup .3s}
+  .feeditem:last-child{border:none}
+  .feeditem .fem{flex:0 0 22px;text-align:center}
+  .feeditem b{color:var(--deep)}
+  @media (prefers-color-scheme: dark){ .feeditem b{color:#7fd1da} }
+  .feeditem .ago{color:var(--muted);font-size:.76rem;white-space:nowrap;margin-left:auto;padding-left:8px}
+  .feed-empty{color:var(--muted);font-size:.88rem;text-align:center;padding:12px}
+
+  /* ---------- ITINERARY ---------- */
+  .day{background:var(--card);border-radius:20px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;
+    transition:transform .2s}
+  .day .top{display:flex;align-items:center;gap:14px;padding:16px 18px;color:#fff}
+  .day:nth-of-type(1) .top{background:linear-gradient(110deg,#f76b1c,#fad961)}
+  .day:nth-of-type(2) .top{background:linear-gradient(110deg,#0fa3b1,#34d0c3)}
+  .day:nth-of-type(3) .top{background:linear-gradient(110deg,#8c7ae6,#b794f4)}
+  .day:nth-of-type(4) .top{background:linear-gradient(110deg,#2e9e6b,#7bd88f)}
+  .day:nth-of-type(5) .top{background:linear-gradient(110deg,#ff5c6e,#ff9a8b)}
+  .day:nth-of-type(6) .top{background:linear-gradient(110deg,#1668a8,#56ccf2)}
+  .day:nth-of-type(7) .top{background:linear-gradient(110deg,#b8860b,#ffd194)}
+  .day:nth-of-type(8) .top{background:linear-gradient(110deg,#5f2c82,#a166ab)}
+  .day .daynum{flex:0 0 auto;width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.22);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;line-height:1;font-size:1.15rem}
+  .day .daynum small{font-size:.58rem;font-weight:700;opacity:.85}
+  .day .top .meta h3{font-size:1.1rem;font-family:'Fraunces',serif}
+  .day .top .meta .date{font-size:.82rem;opacity:.92;font-weight:600}
+  .day .top .meta .wx{font-size:.8rem;opacity:.95;font-weight:700;display:block;margin-top:2px}
   .day .body{padding:14px 18px}
-  .row{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed rgba(0,0,0,.08)}
+  .day.isToday{outline:3px solid var(--gold);outline-offset:2px}
+  .todayflag{display:inline-block;font-size:.66rem;font-weight:800;background:#fff;color:#b8860b;border-radius:999px;padding:1px 9px;margin-left:8px;vertical-align:middle;letter-spacing:.5px}
+  .row{display:flex;gap:12px;padding:9px 0;border-bottom:1px dashed var(--dline)}
   .row:last-child{border-bottom:none}
   .row .ic{flex:0 0 auto;font-size:1.1rem;width:24px;text-align:center}
   .row .txt{font-size:.95rem}
   .row .txt b{color:var(--deep)}
+  @media (prefers-color-scheme: dark){ .row .txt b{color:#7fd1da} }
   .pill{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;margin-left:6px;vertical-align:middle}
   .pill.dinner{background:#ffe7d6;color:#c1521f}
   .pill.activity{background:#d8f3e6;color:#1d7a51}
   .pill.note{background:#fff1c2;color:#9a7400}
   .pill.travel{background:#dceefb;color:#1668a8}
 
+  /* ---------- WEATHER ---------- */
   .wxhead{font-size:.85rem;color:var(--muted);margin-bottom:12px}
   .wxgrid{display:grid;gap:10px}
-  .wxcard{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:13px 16px;display:flex;align-items:center;gap:14px}
+  .wxcard{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:13px 16px;display:flex;align-items:center;gap:14px}
   .wxcard .em{font-size:2rem;flex:0 0 auto;width:46px;text-align:center}
   .wxcard .wd{flex:1;min-width:0}
-  .wxcard .wd h4{font-size:1rem;color:var(--deep)}
+  .wxcard .wd h4{font-size:1rem;color:var(--deep);font-family:'Fraunces',serif}
+  @media (prefers-color-scheme: dark){ .wxcard .wd h4{color:#7fd1da} }
   .wxcard .wd p{font-size:.85rem;color:var(--muted)}
-  .wxcard .rain{font-size:.78rem;color:#1668a8;font-weight:600}
+  .wxcard .rain{font-size:.78rem;color:#3d9be9;font-weight:700}
   .wxcard .sun{font-size:.78rem;color:var(--muted);margin-top:2px}
-  .wxcard .tide{font-size:.78rem;color:#0b6e7c;font-weight:600;margin-top:2px}
+  .wxcard .tide{font-size:.78rem;color:var(--ocean);font-weight:700;margin-top:2px}
   .wxcard .temps{text-align:right;flex:0 0 auto}
-  .wxcard .temps .hi{font-weight:800;font-size:1.15rem;color:var(--ink)}
+  .wxcard .temps .hi{font-weight:800;font-size:1.2rem}
   .wxcard .temps .lo{color:var(--muted);font-size:.9rem}
   .wxnote{font-size:.78rem;color:var(--muted);margin-top:10px;text-align:center}
 
+  /* ---------- MAP ---------- */
+  #mapbox{height:430px;border-radius:20px;box-shadow:var(--shadow);overflow:hidden;z-index:1}
+  .leaflet-container{font-family:'Outfit',sans-serif}
+  .pin{font-size:26px;line-height:1;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));transform:translate(-3px,-6px)}
+  .leaflet-popup-content{font-size:.9rem}
+  .leaflet-popup-content b{font-family:'Fraunces',serif}
+  .leaflet-popup-content a{color:var(--ocean);font-weight:700}
+  .maplegend{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+  .mchip{font-size:.8rem;font-weight:700;background:var(--chipbg);border:1px solid var(--line);color:var(--deep);
+    border-radius:999px;padding:6px 12px;cursor:pointer}
+  @media (prefers-color-scheme: dark){ .mchip{color:#9fd4dc} }
+
+  /* ---------- DINNERS ---------- */
   .dinners{display:grid;gap:10px}
-  .dinner-card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:13px 16px;
+  .dinner-card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:13px 16px;
     display:flex;gap:13px;align-items:flex-start;border-left:5px solid var(--coral)}
   .dinner-card .n{font-size:1.5rem;flex:0 0 auto}
-  .dinner-card h4{font-size:1rem;color:var(--deep)}
+  .dinner-card h4{font-size:1rem;color:var(--deep);font-family:'Fraunces',serif}
+  @media (prefers-color-scheme: dark){ .dinner-card h4{color:#7fd1da} }
   .dinner-card p{font-size:.9rem;color:var(--muted);margin-top:2px}
 
-  .tcard{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:15px 17px;margin-bottom:12px}
-  .tcard h4{color:var(--deep);font-size:1.02rem;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-  .tline{display:flex;gap:10px;padding:7px 0;font-size:.92rem;border-bottom:1px dashed rgba(0,0,0,.07)}
+  /* ---------- TRAVEL ---------- */
+  .tcard{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:15px 17px;margin-bottom:12px}
+  .tcard h4{color:var(--deep);font-size:1.02rem;margin-bottom:8px;display:flex;align-items:center;gap:8px;font-family:'Fraunces',serif}
+  @media (prefers-color-scheme: dark){ .tcard h4{color:#7fd1da} }
+  .tline{display:flex;gap:10px;padding:7px 0;font-size:.92rem;border-bottom:1px dashed var(--dline)}
   .tline:last-child{border:none}
-  .tline .k{flex:0 0 90px;color:var(--muted);font-weight:600}
+  .tline .k{flex:0 0 90px;color:var(--muted);font-weight:700}
   .tline .v{flex:1}
-  .tcard a{color:var(--ocean);font-weight:600;text-decoration:none}
-  .install{background:linear-gradient(135deg,#fff,#eef6ff);border:1px dashed var(--ocean);border-radius:14px;padding:14px 16px;font-size:.9rem;margin-top:4px}
+  .tcard a{color:var(--ocean);font-weight:700;text-decoration:none}
+  .install{background:var(--card2);border:1px dashed var(--ocean);border-radius:16px;padding:14px 16px;font-size:.9rem;margin-top:4px}
   .install b{color:var(--deep)}
-
-  .callout{background:linear-gradient(135deg,#fff,#fff6ec);border:1px dashed var(--sunset1);
-    border-radius:14px;padding:14px 16px;font-size:.92rem;margin-top:10px}
+  @media (prefers-color-scheme: dark){ .install b{color:#7fd1da} }
+  .callout{background:var(--card2);border:1px dashed var(--sunset1);border-radius:16px;padding:14px 16px;font-size:.92rem;margin-top:10px}
   .callout b{color:var(--coral)}
 
-  .whobar{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:13px 15px;margin-bottom:12px}
+  /* ---------- FOOD / PACKING ---------- */
+  .whobar{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:13px 15px;margin-bottom:12px}
   .whobar.flash{animation:flash .9s ease}
   @keyframes flash{0%,100%{box-shadow:var(--shadow)}30%{box-shadow:0 0 0 3px var(--coral)}}
-  .whobar .q{font-size:.78rem;color:var(--muted);font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+  .whobar .q{font-size:.78rem;color:var(--muted);font-weight:800;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
   .chips{display:flex;flex-wrap:wrap;gap:7px}
-  .chip{font-size:.9rem;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid rgba(0,0,0,.1);background:#fff;color:var(--deep);cursor:pointer}
+  .chip{font-size:.9rem;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--chipbg);color:var(--deep);cursor:pointer;transition:transform .12s}
+  .chip:active{transform:scale(.92)}
   .chip.sel{background:var(--ocean);color:#fff;border-color:var(--ocean)}
-  .wholabel{font-size:.85rem;color:var(--deep);font-weight:600;margin-top:9px}
-  .mineToggle{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:.88rem;color:var(--ink);cursor:pointer}
+  @media (prefers-color-scheme: dark){ .chip{color:#9fd4dc} .chip.sel{color:#fff} }
+  .wholabel{font-size:.85rem;color:var(--deep);font-weight:700;margin-top:9px}
+  @media (prefers-color-scheme: dark){ .wholabel{color:#7fd1da} }
+  .mineToggle{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:.88rem;cursor:pointer}
   .mineToggle input{width:18px;height:18px}
   .progress{margin:11px 0 2px}
-  .progress .bar{height:10px;background:#e9eef0;border-radius:999px;overflow:hidden}
-  .progress .fill{height:100%;background:linear-gradient(90deg,var(--leaf),var(--ocean));width:0%;transition:width .3s}
-  .progress .ptxt{font-size:.8rem;color:var(--muted);margin-top:5px;font-weight:600}
-
+  .progress .bar{height:10px;background:var(--line);border-radius:999px;overflow:hidden}
+  .progress .fill{height:100%;background:linear-gradient(90deg,var(--leaf),var(--ocean));width:0%;transition:width .35s}
+  .progress .ptxt{font-size:.8rem;color:var(--muted);margin-top:5px;font-weight:700}
   .legend{font-size:.82rem;color:var(--muted);margin-bottom:12px}
-  .cat{background:var(--card);border-radius:14px;box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden}
-  .cat h4{background:#f3fbfa;color:var(--deep);padding:11px 16px;font-size:.95rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid rgba(0,0,0,.05)}
+  .cat{background:var(--card);border-radius:16px;box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden}
+  .cat h4{background:var(--card2);color:var(--deep);padding:11px 16px;font-size:.95rem;display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line);font-family:'Fraunces',serif}
+  @media (prefers-color-scheme: dark){ .cat h4{color:#7fd1da} }
   .cat ul{list-style:none;padding:6px 16px 12px}
-  .cat li{display:flex;align-items:center;gap:9px;padding:8px 0;font-size:.93rem;border-bottom:1px solid rgba(0,0,0,.04);cursor:pointer}
+  .cat li{display:flex;align-items:center;gap:9px;padding:9px 0;font-size:.93rem;border-bottom:1px solid var(--line);cursor:pointer;transition:opacity .2s}
   .cat li:last-child{border-bottom:none}
-  .cat li .box{flex:0 0 auto;width:20px;height:20px;border:2px solid var(--ocean);border-radius:5px;position:relative}
+  .cat li .box{flex:0 0 auto;width:21px;height:21px;border:2px solid var(--ocean);border-radius:6px;position:relative;transition:background .15s}
   .cat li .box.on{background:var(--leaf);border-color:var(--leaf)}
-  .cat li .box.on::after{content:"✓";color:#fff;font-size:14px;font-weight:800;position:absolute;top:-1px;left:3px}
-  .cat li.got{opacity:.6}
+  .cat li .box.on::after{content:"✓";color:#fff;font-size:14px;font-weight:800;position:absolute;top:-1px;left:4px}
+  .cat li.got{opacity:.55}
   .cat li.got .itemname{text-decoration:line-through}
   .itemname{flex:1}
-  .by{font-size:.7rem;font-weight:700;color:var(--leaf);white-space:nowrap}
+  .by{font-size:.7rem;font-weight:800;color:var(--leaf);white-space:nowrap}
   .tag{font-size:.66rem;font-weight:700;padding:1px 7px;border-radius:999px}
   .tag.buy{background:#d8f3e6;color:#1d7a51}
   .tag.bring{background:#ffe2e6;color:#c2334a}
   .tag.grocery{background:#fff1c2;color:#9a7400}
 
-  .resvform{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:14px 15px;margin-bottom:14px}
-  .resvform input{width:100%;padding:9px 11px;border:1px solid rgba(0,0,0,.15);border-radius:9px;font-size:.92rem;margin-bottom:8px;font-family:inherit}
+  /* ---------- RESERVATIONS ---------- */
+  .resvform{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px 15px;margin-bottom:14px}
+  .resvform input{width:100%;padding:10px 12px;border:1px solid var(--dline);border-radius:10px;font-size:.92rem;margin-bottom:8px;font-family:inherit;background:var(--chipbg);color:var(--ink)}
   .resvform .rrow{display:flex;gap:8px}
   .resvform .rrow input{flex:1}
-  .btn{background:var(--ocean);color:#fff;border:none;border-radius:9px;padding:11px 16px;font-weight:700;font-size:.92rem;cursor:pointer;width:100%}
-  .resv{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:12px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;border-left:5px solid var(--gold)}
+  .btn{background:linear-gradient(135deg,var(--ocean),var(--deep));color:#fff;border:none;border-radius:12px;padding:12px 16px;font-weight:800;font-size:.92rem;cursor:pointer;width:100%;font-family:inherit;transition:transform .12s}
+  .btn:active{transform:scale(.97)}
+  .resv{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:12px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;border-left:5px solid var(--gold)}
   .resv .ri{flex:1;min-width:0}
-  .resv h4{font-size:1rem;color:var(--deep)}
+  .resv h4{font-size:1rem;color:var(--deep);font-family:'Fraunces',serif}
+  @media (prefers-color-scheme: dark){ .resv h4{color:#7fd1da} }
   .resv .meta{font-size:.85rem;color:var(--muted);margin-top:2px}
   .resv .notes{font-size:.85rem;margin-top:4px}
   .resv .del{flex:0 0 auto;background:none;border:none;color:var(--coral);font-size:1.4rem;cursor:pointer;line-height:1}
   .resv-empty{font-size:.9rem;color:var(--muted);text-align:center;padding:14px}
-
-  .synctag{font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:999px;background:#d8f3e6;color:#1d7a51}
+  .synctag{font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:999px;background:#d8f3e6;color:#1d7a51}
   .synctag.off{background:#fff1c2;color:#9a7400}
 
-  .wish{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:12px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;cursor:pointer}
-  .wish .star{font-size:1.3rem;flex:0 0 auto;filter:grayscale(1);opacity:.45;transition:.2s}
+  /* ---------- WISHLIST ---------- */
+  .wish{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:13px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:transform .15s}
+  .wish:active{transform:scale(.985)}
+  .wish .star{font-size:1.4rem;flex:0 0 auto;filter:grayscale(1);opacity:.4;transition:.2s}
   .wish.on{outline:2px solid var(--gold)}
-  .wish.on .star{filter:none;opacity:1}
-  .wish h4{font-size:.98rem;color:var(--deep)}
+  .wish.on .star{filter:none;opacity:1;transform:scale(1.12)}
+  .wish h4{font-size:.98rem;color:var(--deep);font-family:'Fraunces',serif}
+  @media (prefers-color-scheme: dark){ .wish h4{color:#7fd1da} }
   .wish p{font-size:.85rem;color:var(--muted);margin-top:2px}
+  .wish .voters{font-size:.76rem;font-weight:800;color:var(--gold);margin-top:5px}
   .kid{font-size:.64rem;font-weight:700;color:#1d7a51;background:#d8f3e6;padding:1px 7px;border-radius:999px;margin-left:6px;white-space:nowrap}
+  .toppick{font-size:.64rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#f6b93b,#ff6b5e);padding:1px 8px;border-radius:999px;margin-left:6px;white-space:nowrap}
+
+  /* ---------- PHOTOS ---------- */
+  .upcard{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px 15px;margin-bottom:14px}
+  .upcard input[type=text]{width:100%;padding:10px 12px;border:1px solid var(--dline);border-radius:10px;font-size:.92rem;margin-bottom:8px;font-family:inherit;background:var(--chipbg);color:var(--ink)}
+  #upStatus{font-size:.82rem;color:var(--muted);margin-top:8px;font-weight:700;text-align:center}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .ph{position:relative;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:1;background:var(--card2);cursor:pointer;animation:fadeup .35s}
+  .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .ph .pmeta{position:absolute;left:0;right:0;bottom:0;padding:18px 9px 7px;background:linear-gradient(transparent,rgba(0,0,0,.65));color:#fff;font-size:.72rem;font-weight:700}
+  .ph .pdel{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.45);color:#fff;border:none;border-radius:50%;width:26px;height:26px;font-size:.95rem;cursor:pointer;line-height:1}
+  .pgrid-empty{color:var(--muted);font-size:.9rem;text-align:center;padding:20px;grid-column:1/-1}
+  #lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;cursor:zoom-out}
+  #lightbox img{max-width:100%;max-height:82vh;border-radius:12px}
+  #lightbox .lbcap{color:#fff;font-size:.9rem;margin-top:12px;text-align:center;font-weight:600}
+
+  /* ---------- LOGIN MODAL ---------- */
+  .modal{position:fixed;inset:0;background:rgba(8,20,26,.6);backdrop-filter:blur(4px);z-index:900;display:flex;align-items:center;justify-content:center;padding:24px}
+  .mbox{background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:24px 22px;max-width:380px;width:100%;text-align:center;animation:fadeup .25s}
+  .mbox h3{color:var(--deep);font-size:1.3rem;margin-bottom:4px}
+  @media (prefers-color-scheme: dark){ .mbox h3{color:#7fd1da} }
+  .mbox p{font-size:.86rem;color:var(--muted);margin-bottom:14px}
+  .mbox .chips{justify-content:center}
 
   footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:40px}
-  @media(max-width:480px){ .hero h1{font-size:1.7rem} }
+  @media(max-width:480px){ .hero h1{font-size:1.9rem} .tdhero .bignum{font-size:3.6rem} }
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <h1>🌺 Maui 2026 🌴</h1>
-  <div class="sub">The Family Master Itinerary</div>
+  <button class="whochip" id="whoOpen">👤 Tap to log in</button>
+  <div class="sun"></div>
+  <span class="palm l">🌴</span><span class="palm r">🌴</span>
+  <h1>🌺 Maui 2026</h1>
+  <div class="sub">The Family Trip HQ</div>
   <div class="dates">Fri Jun 12 – Fri Jun 19 · Marriott's Maui Ocean Club</div>
   <div class="count" id="countdown"></div>
+  <svg class="waves" viewBox="0 0 840 54" preserveAspectRatio="none" aria-hidden="true">
+    <path class="w2" fill="rgba(15,163,177,.55)" d="M-140 28 Q-105 16 -70 28 T0 28 T70 28 T140 28 T210 28 T280 28 T350 28 T420 28 T490 28 T560 28 T630 28 T700 28 T770 28 T840 28 T910 28 T980 28 V54 H-140 Z"/>
+    <path class="w1" fill="var(--sand)" d="M-140 38 Q-105 26 -70 38 T0 38 T70 38 T140 38 T210 38 T280 38 T350 38 T420 38 T490 38 T560 38 T630 38 T700 38 T770 38 T840 38 T910 38 T980 38 V54 H-140 Z"/>
+  </svg>
 </header>
 
 <nav id="topnav">
   <div class="navinner">
+    <a href="#today">🌅 Today</a>
     <a href="#itinerary">🗓️ Itinerary</a>
+    <a href="#costco">🛒 Food</a>
+    <a href="#photos">📸 Photos</a>
     <a href="#weather">🌤️ Weather</a>
-    <a href="#travel">✈️ Travel</a>
+    <a href="#map">🗺️ Map</a>
     <a href="#dinners">🍽️ Dinners</a>
-    <a href="#costco">🛒 Food List</a>
+    <a href="#wishlist">⭐ Wishlist</a>
     <a href="#packing">🧳 Packing</a>
     <a href="#reservations">📅 Reservations</a>
-    <a href="#wishlist">⭐ Wishlist</a>
+    <a href="#travel">✈️ Travel</a>
   </div>
 </nav>
 
 <div class="wrap">
+
+  <!-- TODAY -->
+  <section id="today">
+    <div class="tdhero" id="tdhero"><div class="pad"><div class="kick">Loading…</div></div></div>
+    <div id="todayBody"></div>
+    <div class="tdcard">
+      <h4>📡 Family activity <span class="synctag syncBadge" style="margin-left:auto">Connecting…</span></h4>
+      <div class="feed" id="feedList"><div class="feed-empty">Nothing yet — check off a food item, star a wishlist pick, or add a photo and it'll show up here for everyone. 🤙</div></div>
+    </div>
+  </section>
 
   <!-- ITINERARY -->
   <section id="itinerary">
@@ -580,7 +728,7 @@
   <!-- WISHLIST -->
   <section id="wishlist">
     <h2><span class="em">⭐</span> Activity Wishlist</h2>
-    <div class="callout" style="margin-top:0;margin-bottom:14px">Tap the things you'd like to do — your picks are saved on your phone (the ⭐ lights up). Tell Cody your favorites and he'll slot them into the days.</div>
+    <div class="callout" style="margin-top:0;margin-bottom:14px">Tap the ⭐ to vote — <b>votes are shared live</b> and the most-wanted activities float to the top. Top picks get slotted into the days.</div>
 
     <div class="wish" data-id="w-slaughterhouse"><div class="star">⭐</div><div><h4>Slaughterhouse Beach <span class="kid">kid-friendly</span></h4><p>Sandy, calm water for wading with Annabelle. <em>(already on Day 5)</em></p></div></div>
     <div class="wish" data-id="w-blackrock"><div class="star">⭐</div><div><h4>Snorkel at Black Rock (Pu'u Keka'a)</h4><p>Easy, close-by snorkeling right on Kā‘anapali Beach.</p></div></div>
@@ -594,54 +742,98 @@
     <div class="wish" data-id="w-hana"><div class="star">⭐</div><div><h4>Road to Hana</h4><p>All-day epic drive — beautiful, but long for a toddler. Optional.</p></div></div>
   </section>
 
+  <!-- MAP -->
+  <section id="map">
+    <h2><span class="em">🗺️</span> Our Maui Map</h2>
+    <div class="legend">All our spots, pinned. Tap a pin → <b>Directions</b> opens Google Maps. Tap a chip to jump to it.</div>
+    <div id="mapbox"></div>
+    <div class="maplegend" id="maplegend"></div>
+  </section>
+
+  <!-- PHOTOS -->
+  <section id="photos">
+    <h2><span class="em">📸</span> Photo Wall <span class="synctag syncBadge">Connecting…</span></h2>
+    <div class="legend">Everyone's trip photos, in one shared wall — add yours and the whole family sees it instantly.</div>
+    <div class="upcard">
+      <input type="text" id="photoCap" placeholder="Caption (optional) — e.g., Cabana life 🌴">
+      <button class="btn" id="photoBtn">📷 Add photos</button>
+      <input type="file" id="photoFile" accept="image/*" multiple style="display:none">
+      <div id="upStatus"></div>
+    </div>
+    <div class="pgrid" id="pgrid"><div class="pgrid-empty">No photos yet — be the first! 🤙</div></div>
+  </section>
+
   <footer>
     🌴 Made with aloha · Maui June 2026<br>
-    <em>Tap a tab up top to view it · tap again to close. Add to your home screen from the Travel tab.</em>
+    <em>Add to your home screen from the Travel tab.</em>
   </footer>
 
 </div>
 
+<div id="lightbox" hidden><img id="lbimg" alt=""><div class="lbcap" id="lbcap"></div></div>
+
+<div id="loginModal" class="modal" hidden>
+  <div class="mbox">
+    <h3>🤙 Who are you?</h3>
+    <p>So everyone can see who grabbed what, who's voting, and who took the photo.</p>
+    <div class="chips" id="modalChips"></div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js"></script>
 <script>
 (function(){
-  /* ---------- Tabs ---------- */
-  var links = [].slice.call(document.querySelectorAll('#topnav a'));
-  var nav = document.getElementById('topnav');
-  var sections = {};
-  function clearAll(){
-    links.forEach(function(x){x.classList.remove('active');});
-    Object.keys(sections).forEach(function(k){sections[k].classList.remove('active');});
-  }
-  links.forEach(function(a){
-    var id = a.getAttribute('href').slice(1);
-    sections[id] = document.getElementById(id);
-    a.addEventListener('click', function(e){
-      e.preventDefault();
-      var wasActive = a.classList.contains('active');
-      clearAll();
-      if(!wasActive){ a.classList.add('active'); sections[id].classList.add('active'); nav.scrollIntoView({behavior:'smooth', block:'start'}); }
-    });
-  });
-  var def = document.querySelector('#topnav a[href="#itinerary"]');
-  if(def){ def.classList.add('active'); sections['itinerary'].classList.add('active'); }
-
-  /* ---------- helpers ---------- */
+  var NAMES=['Greg','Cheri','Jim','Kristie','Riley','Nathan','Cody','Jill'];
+  var TRIP_START='2026-06-12', TRIP_END='2026-06-19';
   function load(k){ try { return JSON.parse(localStorage.getItem(k) || '{}'); } catch(e){ return {}; } }
   function save(k,v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
   function noop(){}
   function esc(s){ return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function whoNow(){ return localStorage.getItem('maui-who-v1')||''; }
+
+  /* ---------- Tabs ---------- */
+  var links = [].slice.call(document.querySelectorAll('#topnav a'));
+  var nav = document.getElementById('topnav');
+  var sections = {};
+  function showTab(id, scroll){
+    links.forEach(function(x){ x.classList.toggle('active', x.getAttribute('href')==='#'+id); if(x.getAttribute('href')==='#'+id){ try{x.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}catch(e){} } });
+    Object.keys(sections).forEach(function(k){ sections[k].classList.toggle('active', k===id); });
+    if(scroll!==false){ nav.scrollIntoView({behavior:'smooth', block:'start'}); }
+    if(id==='map'){ initMap(); }
+  }
+  links.forEach(function(a){
+    var id = a.getAttribute('href').slice(1);
+    sections[id] = document.getElementById(id);
+    a.addEventListener('click', function(e){ e.preventDefault(); showTab(id); });
+  });
+  showTab('today', false);
 
   /* ---------- Countdown ---------- */
   try {
     var trip = new Date('2026-06-12T08:16:00-07:00');
     var d2 = Math.ceil((trip - new Date())/(1000*60*60*24));
     var cel = document.getElementById('countdown');
-    if(cel){ cel.textContent = d2>1 ? ('🌅 '+d2+' days to go!') : (d2===1?'🌅 1 day to go!':(d2===0?'🌴 Aloha — it’s trip day!':'🌴 Hope you’re having a blast!')); }
+    if(cel){ cel.textContent = d2>1 ? ('🌅 '+d2+' days to go!') : (d2===1?'🌅 1 day to go!':(d2===0?'🌴 Aloha — it’s trip day!':'🌴 Aloha from Maui!')); }
   } catch(e){}
 
+  /* ---------- Identity (global) ---------- */
+  var modal=document.getElementById('loginModal'), modalChips=document.getElementById('modalChips'), whoBtn=document.getElementById('whoOpen');
+  var pendingWho=null;
+  NAMES.forEach(function(n){
+    var c=document.createElement('span'); c.className='chip'; c.dataset.name=n; c.textContent=n;
+    c.addEventListener('click', function(){ localStorage.setItem('maui-who-v1', n); modal.hidden=true; refreshChips(); renderVotes(); loadPhotosUI(); if(pendingWho){ var f=pendingWho; pendingWho=null; f(); } });
+    modalChips.appendChild(c);
+  });
+  function ensureWho(cb){ if(whoNow()){ cb(); } else { pendingWho=cb; openModal(); } }
+  function openModal(){ [].slice.call(modalChips.children).forEach(function(c){ c.classList.toggle('sel', c.dataset.name===whoNow()); }); modal.hidden=false; }
+  whoBtn.addEventListener('click', openModal);
+  modal.addEventListener('click', function(e){ if(e.target===modal) modal.hidden=true; });
+
   /* ---------- Weather + Sun + Tides ---------- */
-  var WX='maui-wx-v1', TIDEK='maui-tide-v1', TRIP_START='2026-06-12', TRIP_END='2026-06-19';
-  var tideMap={};
+  var WX='maui-wx-v1', TIDEK='maui-tide-v1';
+  var tideMap={}, wxByDate={};
   function wmo(c){
     var m={0:['☀️','Clear & sunny'],1:['🌤️','Mostly sunny'],2:['⛅','Partly cloudy'],3:['☁️','Cloudy'],
     45:['🌫️','Fog'],48:['🌫️','Fog'],51:['🌦️','Light drizzle'],53:['🌦️','Drizzle'],55:['🌦️','Drizzle'],
@@ -665,6 +857,7 @@
       var hi=Math.round(d.daily.temperature_2m_max[i]), lo=Math.round(d.daily.temperature_2m_min[i]);
       var rain=d.daily.precipitation_probability_max[i];
       var sr=d.daily.sunrise?d.daily.sunrise[i].split('T')[1]:null, ss=d.daily.sunset?d.daily.sunset[i].split('T')[1]:null;
+      wxByDate[t[i]]={e:info.e,l:info.l,hi:hi,lo:lo,rain:rain,sr:sr,ss:ss};
       var sun = sr&&ss ? ('🌅 '+fmtClock(sr)+' · 🌇 '+fmtClock(ss)) : '';
       var tide = tideStr(t[i]);
       var card=document.createElement('div'); card.className='wxcard';
@@ -680,6 +873,7 @@
     if(!any){ grid.innerHTML='<div class="wxcard"><div class="wd"><p>Forecast not available yet for these dates — check back closer to the trip.</p></div></div>'; }
     var stamp=document.getElementById('wxStamp');
     if(stamp) stamp.textContent='· Updated '+new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    renderToday();
   }
   function loadTides(){
     var cached=localStorage.getItem(TIDEK); if(cached){ try{ tideMap=JSON.parse(cached).d||{}; }catch(e){} }
@@ -704,16 +898,52 @@
   /* ---------- Live sync (Supabase) ---------- */
   var SUPA_URL='https://fwlvucntvapfbntznojc.supabase.co';
   var SUPA_KEY='sb_publishable_0zVvzBrwRfKJlAj8qOaJpg_bqNA1xI8';
+  var PHB=SUPA_URL+'/storage/v1/object/public/trip-photos/';
   var sb=null;
   try { if(window.supabase && window.supabase.createClient){ sb=window.supabase.createClient(SUPA_URL,SUPA_KEY); } } catch(e){}
   function setSync(on){ [].slice.call(document.querySelectorAll('.syncBadge')).forEach(function(b){ b.textContent= on?'🟢 Live sync on':'🟡 Saved on this phone'; b.classList.toggle('off',!on); }); }
   setSync(false);
 
+  /* ---------- Activity feed ---------- */
+  var feedRows=[];
+  function logAct(action){
+    var w=whoNow(); if(!sb||!w) return;
+    sb.from('maui_activity').insert({name:w, action:action}).then(noop,noop);
+  }
+  function ago(ts){
+    var s=Math.max(0,(Date.now()-new Date(ts).getTime())/1000);
+    if(s<60) return 'just now';
+    if(s<3600) return Math.floor(s/60)+'m ago';
+    if(s<86400) return Math.floor(s/3600)+'h ago';
+    return Math.floor(s/86400)+'d ago';
+  }
+  function actEmoji(a){
+    if(a.indexOf('photo')>-1) return '📸';
+    if(a.indexOf('voted')>-1) return '⭐';
+    if(a.indexOf('reservation')>-1) return '📅';
+    if(a.indexOf('packed')>-1) return '🧳';
+    return '🛒';
+  }
+  function renderFeed(){
+    var box=document.getElementById('feedList'); if(!box) return;
+    if(!feedRows.length){ box.innerHTML='<div class="feed-empty">Nothing yet — check off a food item, star a wishlist pick, or add a photo and it’ll show up here for everyone. 🤙</div>'; return; }
+    box.innerHTML='';
+    feedRows.forEach(function(r){
+      var el=document.createElement('div'); el.className='feeditem';
+      el.innerHTML='<span class="fem">'+actEmoji(r.action)+'</span><span><b>'+esc(r.name)+'</b> '+esc(r.action)+'</span><span class="ago">'+ago(r.created_at)+'</span>';
+      box.appendChild(el);
+    });
+  }
+  function loadFeed(){
+    if(!sb) return;
+    sb.from('maui_activity').select('*').order('created_at',{ascending:false}).limit(30).then(function(res){ feedRows=res.data||[]; renderFeed(); }, noop);
+  }
+  setInterval(renderFeed, 60000);
+
+  /* ---------- Shared check lists ---------- */
   var CCACHE='maui-checks-cache-v1';
   function cacheAll(){ return load(CCACHE); }
   function cacheSet(list,id,on,name){ var c=cacheAll(); c[list]=c[list]||{}; if(on){ c[list][id]=name||true; } else { delete c[list][id]; } save(CCACHE,c); }
-  function whoNow(){ return localStorage.getItem('maui-who-v1')||''; }
-
   function slug(prefix,txt){ return prefix+txt.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
   function wire(sectionId, list, prefix){
     var lis=[].slice.call(document.querySelectorAll('#'+sectionId+' .cat li'));
@@ -739,27 +969,36 @@
   function onToggle(li){
     var on=!li.classList.contains('got');
     var who=whoNow();
-    if(on && !who && li.dataset.list==='food'){ var bar=document.getElementById('whobar'); if(bar){ bar.classList.remove('flash'); void bar.offsetWidth; bar.classList.add('flash'); } var lb=document.getElementById('whoLabel'); if(lb){ lb.textContent='👆 Tap your name first so others know who grabbed it'; } return; }
+    if(on && !who){ ensureWho(function(){ onToggle(li); }); return; }
     applyUI(li.dataset.list, li.dataset.id, on, who);
+    if(on){ logAct((li.dataset.list==='food'?'checked off ':'packed ')+li.querySelector('.itemname').textContent); }
     if(sb){
       if(on){ sb.from('maui_checks').upsert({list:li.dataset.list,item_id:li.dataset.id,by_name:who},{onConflict:'list,item_id'}).then(noop,noop); }
       else { sb.from('maui_checks').delete().match({list:li.dataset.list,item_id:li.dataset.id}).then(noop,noop); }
     }
   }
-
-  /* init from local cache for instant paint */
   (function(){ var c=cacheAll(); ['food','packing'].forEach(function(list){ var m=c[list]||{}; Object.keys(m).forEach(function(id){ applyUI(list,id,true, m[id]===true?'':m[id]); }); }); })();
 
-  /* login chips */
+  /* food-tab login chips */
   var chips=[].slice.call(document.querySelectorAll('#whoChips .chip'));
-  function refreshChips(){ var w=whoNow(); chips.forEach(function(c){ c.classList.toggle('sel', c.dataset.name===w); }); var lb=document.getElementById('whoLabel'); if(lb) lb.textContent = w ? ('✅ Logged in as '+w) : 'Tap your name to log in'; }
-  chips.forEach(function(c){ c.addEventListener('click', function(){ localStorage.setItem('maui-who-v1', c.dataset.name); refreshChips(); }); });
+  function refreshChips(){
+    var w=whoNow();
+    chips.forEach(function(c){ c.classList.toggle('sel', c.dataset.name===w); });
+    var lb=document.getElementById('whoLabel'); if(lb) lb.textContent = w ? ('✅ Logged in as '+w) : 'Tap your name to log in';
+    whoBtn.textContent = w ? ('👤 '+w) : '👤 Tap to log in';
+  }
+  chips.forEach(function(c){ c.addEventListener('click', function(){ localStorage.setItem('maui-who-v1', c.dataset.name); refreshChips(); renderVotes(); loadPhotosUI(); }); });
   refreshChips();
 
-  /* hide done toggle (food) */
   var hideBox=document.getElementById('hideDone');
   if(hideBox){ hideBox.checked = localStorage.getItem('maui-hide-food')==='1'; hideBox.addEventListener('change', function(){ localStorage.setItem('maui-hide-food', hideBox.checked?'1':'0'); updateFood(); }); }
 
+  var foodDone=false, packDone=false;
+  function burst(){
+    if(!window.confetti) return;
+    confetti({particleCount:140,spread:75,origin:{y:.65}});
+    setTimeout(function(){ confetti({particleCount:90,spread:110,origin:{y:.5}}); }, 350);
+  }
   function updateFood(){
     var done=foodItems.filter(function(li){return li.classList.contains('got');}).length;
     var total=foodItems.length, pct=total?Math.round(done/total*100):0;
@@ -767,12 +1006,18 @@
     var t=document.getElementById('progTxt'); if(t) t.textContent=done+' of '+total+' grabbed'+(total&&done===total?' 🎉':'');
     var hide=hideBox&&hideBox.checked;
     foodItems.forEach(function(li){ li.style.display=(hide&&li.classList.contains('got'))?'none':''; });
+    var mf=document.getElementById('tdFoodFill'), mp=document.getElementById('tdFoodPct');
+    if(mf){ mf.style.width=pct+'%'; } if(mp){ mp.textContent=pct+'%'; }
+    if(total&&done===total){ if(!foodDone){ foodDone=true; burst(); } } else foodDone=false;
   }
   function updatePack(){
     var done=packItems.filter(function(li){return li.classList.contains('got');}).length;
     var total=packItems.length, pct=total?Math.round(done/total*100):0;
     var f=document.getElementById('packFill'); if(f) f.style.width=pct+'%';
     var t=document.getElementById('packTxt'); if(t) t.textContent=done+' of '+total+' packed'+(total&&done===total?' 🎉':'');
+    var mf=document.getElementById('tdPackFill'), mp=document.getElementById('tdPackPct');
+    if(mf){ mf.style.width=pct+'%'; } if(mp){ mp.textContent=pct+'%'; }
+    if(total&&done===total){ if(!packDone){ packDone=true; burst(); } } else packDone=false;
   }
   updateFood(); updatePack();
 
@@ -801,6 +1046,7 @@
     if(!title){ document.getElementById('rTitle').focus(); return; }
     var row={ title:title, day_label:document.getElementById('rDay').value.trim(), time_label:document.getElementById('rTime').value.trim(), notes:document.getElementById('rNotes').value.trim() };
     document.getElementById('rTitle').value=''; document.getElementById('rDay').value=''; document.getElementById('rTime').value=''; document.getElementById('rNotes').value='';
+    logAct('added a reservation — '+row.title);
     if(sb){ sb.from('maui_reservations').insert(row).then(function(){ loadResv(); }, noop); }
     else { var arr=resvGet(); row.id='local-'+Date.now(); arr.push(row); resvSave(arr); renderResv(arr); }
   }
@@ -810,7 +1056,121 @@
   }
   var addBtn=document.getElementById('rAdd'); if(addBtn) addBtn.addEventListener('click', addResv);
 
-  /* ---------- Realtime + initial server reconcile ---------- */
+  /* ---------- Wishlist (shared votes) ---------- */
+  var votes={}; /* wish_id -> [names] */
+  var wishEls=[].slice.call(document.querySelectorAll('#wishlist .wish'));
+  wishEls.forEach(function(w,i){
+    w.dataset.ord=i;
+    var v=document.createElement('div'); v.className='voters'; w.querySelector('div:last-child').appendChild(v);
+    w.addEventListener('click', function(){ toggleVote(w); });
+  });
+  function renderVotes(){
+    var me=whoNow();
+    wishEls.forEach(function(w){
+      var arr=votes[w.dataset.id]||[];
+      w.classList.toggle('on', me && arr.indexOf(me)>-1);
+      var v=w.querySelector('.voters');
+      v.textContent = arr.length ? ('⭐ '+arr.length+' — '+arr.join(', ')) : '';
+      var old=w.querySelector('.toppick'); if(old) old.remove();
+    });
+    var parent=wishEls[0]?wishEls[0].parentNode:null; if(!parent) return;
+    var sorted=wishEls.slice().sort(function(a,b){
+      var va=(votes[a.dataset.id]||[]).length, vb=(votes[b.dataset.id]||[]).length;
+      return vb-va || (+a.dataset.ord)-(+b.dataset.ord);
+    });
+    sorted.forEach(function(w){ parent.appendChild(w); });
+    if(sorted.length && (votes[sorted[0].dataset.id]||[]).length>=2){
+      var badge=document.createElement('span'); badge.className='toppick'; badge.textContent='🔥 TOP PICK';
+      sorted[0].querySelector('h4').appendChild(badge);
+    }
+  }
+  function loadVotes(){
+    if(!sb){ renderVotes(); return; }
+    sb.from('maui_wish_votes').select('*').then(function(res){
+      var m={}; (res.data||[]).forEach(function(r){ (m[r.wish_id]=m[r.wish_id]||[]).push(r.name); });
+      votes=m; renderVotes();
+    }, noop);
+  }
+  function toggleVote(w){
+    ensureWho(function(){
+      var me=whoNow(), id=w.dataset.id, arr=votes[id]||[], mine=arr.indexOf(me)>-1;
+      if(mine){ votes[id]=arr.filter(function(n){return n!==me;}); } else { votes[id]=arr.concat([me]); }
+      renderVotes();
+      if(!sb) return;
+      if(mine){ sb.from('maui_wish_votes').delete().match({wish_id:id, name:me}).then(noop,noop); }
+      else {
+        sb.from('maui_wish_votes').insert({wish_id:id, name:me}).then(noop,noop);
+        logAct('voted for '+w.querySelector('h4').childNodes[0].textContent.trim()+' ⭐');
+      }
+    });
+  }
+
+  /* ---------- Photo wall ---------- */
+  var photoRows=[];
+  function loadPhotos(){
+    if(!sb) return;
+    sb.from('maui_photos').select('*').order('created_at',{ascending:false}).then(function(res){ photoRows=res.data||[]; loadPhotosUI(); }, noop);
+  }
+  function loadPhotosUI(){
+    var grid=document.getElementById('pgrid'); if(!grid) return;
+    if(!photoRows.length){ grid.innerHTML='<div class="pgrid-empty">No photos yet — be the first! 🤙</div>'; return; }
+    grid.innerHTML='';
+    var me=whoNow();
+    photoRows.forEach(function(r){
+      var el=document.createElement('div'); el.className='ph';
+      var cap=(r.caption?r.caption+' · ':'')+r.name;
+      el.innerHTML='<img loading="lazy" src="'+PHB+esc(r.path)+'" alt="'+esc(cap)+'"><div class="pmeta">'+esc(cap)+'</div>'+(r.name===me?'<button class="pdel" aria-label="Delete">×</button>':'');
+      el.querySelector('img').addEventListener('click', function(){
+        document.getElementById('lbimg').src=PHB+r.path;
+        document.getElementById('lbcap').textContent=cap;
+        document.getElementById('lightbox').hidden=false;
+      });
+      var del=el.querySelector('.pdel');
+      if(del){ del.addEventListener('click', function(e){ e.stopPropagation();
+        if(!confirm('Delete this photo?')) return;
+        sb.from('maui_photos').delete().eq('id', r.id).then(function(){ loadPhotos(); }, noop);
+        try{ sb.storage.from('trip-photos').remove([r.path]); }catch(err){}
+      }); }
+      grid.appendChild(el);
+    });
+  }
+  document.getElementById('lightbox').addEventListener('click', function(){ this.hidden=true; });
+  function resizeImage(file){
+    return new Promise(function(resolve){
+      var url=URL.createObjectURL(file); var img=new Image();
+      img.onload=function(){
+        try{
+          var max=1600, w=img.width, h=img.height;
+          if(w>max||h>max){ var k=Math.min(max/w,max/h); w=Math.round(w*k); h=Math.round(h*k); }
+          var c=document.createElement('canvas'); c.width=w; c.height=h;
+          c.getContext('2d').drawImage(img,0,0,w,h);
+          c.toBlob(function(b){ URL.revokeObjectURL(url); resolve(b||file); }, 'image/jpeg', .85);
+        }catch(e){ URL.revokeObjectURL(url); resolve(file); }
+      };
+      img.onerror=function(){ URL.revokeObjectURL(url); resolve(file); };
+      img.src=url;
+    });
+  }
+  var photoBtn=document.getElementById('photoBtn'), photoFile=document.getElementById('photoFile'), upStatus=document.getElementById('upStatus');
+  if(photoBtn){ photoBtn.addEventListener('click', function(){ ensureWho(function(){ photoFile.click(); }); }); }
+  if(photoFile){ photoFile.addEventListener('change', function(){
+    var files=[].slice.call(photoFile.files||[]); if(!files.length) return;
+    if(!sb){ upStatus.textContent='⚠️ Live sync is offline — try again with a connection.'; return; }
+    var cap=document.getElementById('photoCap').value.trim(), me=whoNow(), done=0;
+    function next(i){
+      if(i>=files.length){ upStatus.textContent='✅ '+done+' photo'+(done===1?'':'s')+' added!'; photoFile.value=''; document.getElementById('photoCap').value=''; loadPhotos(); if(done) logAct('added '+(done===1?'a photo':done+' photos')+' 📸'+(cap?' — '+cap:'')); return; }
+      upStatus.textContent='⬆️ Uploading '+(i+1)+' of '+files.length+'…';
+      resizeImage(files[i]).then(function(blob){
+        var path=Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.jpg';
+        sb.storage.from('trip-photos').upload(path, blob, {contentType:'image/jpeg'}).then(function(res){
+          if(!res.error){ done++; return sb.from('maui_photos').insert({name:me, caption:cap||null, path:path}); }
+        }).then(function(){ next(i+1); }, function(){ next(i+1); });
+      });
+    }
+    next(0);
+  }); }
+
+  /* ---------- Realtime ---------- */
   if(sb){
     sb.from('maui_checks').select('*').then(function(res){
       var rows=res.data||[]; var present={}; rows.forEach(function(r){ present[r.list+'|'+r.item_id]=r.by_name||''; });
@@ -820,7 +1180,7 @@
         else { applyUI(li.dataset.list, li.dataset.id, false, ''); }
       });
     }, noop);
-    loadResv();
+    loadResv(); loadVotes(); loadPhotos(); loadFeed();
     try {
       sb.channel('maui-rt')
         .on('postgres_changes', {event:'*', schema:'public', table:'maui_checks'}, function(p){
@@ -828,18 +1188,120 @@
           else { var n=p.new||{}; applyUI(n.list, n.item_id, true, n.by_name||''); }
         })
         .on('postgres_changes', {event:'*', schema:'public', table:'maui_reservations'}, function(){ loadResv(); })
+        .on('postgres_changes', {event:'*', schema:'public', table:'maui_wish_votes'}, function(){ loadVotes(); })
+        .on('postgres_changes', {event:'*', schema:'public', table:'maui_photos'}, function(){ loadPhotos(); })
+        .on('postgres_changes', {event:'*', schema:'public', table:'maui_activity'}, function(){ loadFeed(); })
         .subscribe(function(status){ setSync(status==='SUBSCRIBED'); });
     } catch(e){ setSync(false); }
   } else {
-    loadResv();
+    loadResv(); renderVotes();
   }
 
-  /* ---------- Wishlist (personal) ---------- */
-  var WL='maui-wish-v1'; var wishes=load(WL);
-  [].slice.call(document.querySelectorAll('#wishlist .wish')).forEach(function(w){
-    var id=w.dataset.id; if(wishes[id]) w.classList.add('on');
-    w.addEventListener('click', function(){ var on=!w.classList.contains('on'); w.classList.toggle('on',on); if(on){wishes[id]=true;}else{delete wishes[id];} save(WL,wishes); });
-  });
+  /* ---------- Map ---------- */
+  var PLACES=[
+    ['🏨',"Marriott's Maui Ocean Club",'Home base — Molokai Tower',20.9136,-156.6936],
+    ['🌺','The Westin Maui',"Jill's massage · Greg & Cheri's date night",20.9203,-156.6953],
+    ['🛍️','Whalers Village','Shops + oceanfront dinners — walkable',20.9222,-156.6940],
+    ['🤿',"Black Rock (Pu'u Keka'a)",'Easy snorkel right on Kā‘anapali Beach',20.9266,-156.6975],
+    ['⛳',"Kā'anapali Golf Courses",'Monday — Jim, Nathan & Cody',20.9215,-156.6850],
+    ['🏖️','Slaughterhouse Beach','Calm wading for Annabelle (Day 5)',21.0079,-156.6402],
+    ['🐠','Honolua Bay','Best snorkeling — adults (rocky entry)',21.0130,-156.6383],
+    ['🛒','Costco Kahului','Day 1 grocery run',20.8838,-156.4656],
+    ['✈️','Kahului Airport (OGG)','Arrive 10:52 AM · depart 12:11 PM',20.8986,-156.4305],
+    ['🐡','Maui Ocean Center','Aquarium — great rainy-day backup',20.7925,-156.5083],
+    ['⛰️','ʻĪao Valley State Park','Short lush scenic walk',20.8800,-156.5470]
+  ];
+  var theMap=null;
+  function initMap(){
+    if(!window.L){ return; }
+    if(theMap){ setTimeout(function(){ theMap.invalidateSize(); },120); return; }
+    theMap=L.map('mapbox',{scrollWheelZoom:false});
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap'}).addTo(theMap);
+    var bounds=[];
+    var legend=document.getElementById('maplegend');
+    PLACES.forEach(function(p){
+      var icon=L.divIcon({className:'', html:'<div class="pin">'+p[0]+'</div>', iconSize:[26,26]});
+      var mk=L.marker([p[3],p[4]],{icon:icon}).addTo(theMap);
+      mk.bindPopup('<b>'+p[0]+' '+esc(p[1])+'</b><br>'+esc(p[2])+'<br><a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+p[3]+','+p[4]+'">Directions ↗</a>');
+      bounds.push([p[3],p[4]]);
+      if(legend){
+        var ch=document.createElement('span'); ch.className='mchip'; ch.textContent=p[0]+' '+p[1];
+        ch.addEventListener('click', function(){ theMap.flyTo([p[3],p[4]],14); mk.openPopup(); });
+        legend.appendChild(ch);
+      }
+    });
+    theMap.fitBounds(bounds,{padding:[28,28]});
+    setTimeout(function(){ theMap.invalidateSize(); },120);
+  }
+
+  /* ---------- Today ---------- */
+  var DINFO={
+    '2026-06-12':['❤️','Jim & Kristie Date Night','Mom & Dad out the first night — easy arrival dinner for everyone else'],
+    '2026-06-13':['🥩','Steak & Chicken Night','Nathan grills (chimichurri) · Kristie’s rice pilaf · Caesar salad'],
+    '2026-06-14':['🌮','Mexican Night','Carnitas, beans & rice, chips & salsa, margaritas'],
+    '2026-06-15':['❤️','Couples’ Date Night','Cody & Jill out · Riley & Nathan out · Kristie & Jim watch Annabelle 👶'],
+    '2026-06-16':['🥂','Grandparents’ Date Night + Burgers','Greg & Cheri at the Westin 6 PM 🎉 · burgers & hot dogs for everyone else'],
+    '2026-06-17':['🍽️','Family Dinner Out','Everyone together — pick the spot!'],
+    '2026-06-18':['🍴','Leftovers Night','Clear out the fridge — last full day'],
+    '2026-06-19':['✈️','Fly home','AS 972 departs 12:11 PM — aloha & a hui hou!']
+  };
+  var CABANA={
+    '2026-06-12':'No cabana today','2026-06-13':'Small cabanas #7–10','2026-06-14':"Ali'i 3 — the big cabana",
+    '2026-06-15':"Ali'i 3 cabana",'2026-06-16':"Ali'i 3 cabana",'2026-06-17':"Ali'i 3 cabana",
+    '2026-06-18':"Ali'i 3 cabana",'2026-06-19':'Checkout by 10 AM'
+  };
+  function hiToday(){
+    try{ return new Intl.DateTimeFormat('en-CA',{timeZone:'Pacific/Honolulu'}).format(new Date()); }
+    catch(e){ return new Date().toISOString().slice(0,10); }
+  }
+  function renderToday(){
+    var hero=document.getElementById('tdhero'), body=document.getElementById('todayBody');
+    if(!hero||!body) return;
+    var t=hiToday();
+    var wx=wxByDate[t]||null;
+    if(t<TRIP_START){
+      var days=Math.ceil((new Date(TRIP_START+'T08:16:00-07:00')-new Date())/(86400000));
+      hero.innerHTML='<div class="pad"><div class="kick">Countdown to Maui</div>'+
+        '<div class="bignum">'+days+'</div>'+
+        '<h3>day'+(days===1?'':'s')+' until paradise 🌺</h3>'+
+        '<div class="tdsub">Wheels up Friday, June 12 · AS 971 · 8:16 AM out of Long Beach</div>'+
+        '<div class="tdchips"><span class="tdchip">🪪 REAL ID</span><span class="tdchip">🧴 Mineral sunscreen</span><span class="tdchip">🛟 Annabelle’s tubes</span></div></div>';
+      body.innerHTML='<div class="tdcard"><h4>🎯 Get ready</h4>'+
+        '<div class="miniprog"><span class="mlabel">🛒 Food list</span><div class="bar"><div class="fill" id="tdFoodFill"></div></div><span class="pct" id="tdFoodPct">0%</span></div>'+
+        '<div class="miniprog"><span class="mlabel">🧳 Packing</span><div class="bar"><div class="fill" id="tdPackFill"></div></div><span class="pct" id="tdPackPct">0%</span></div>'+
+        '</div>';
+      updateFood(); updatePack();
+      return;
+    }
+    if(t>TRIP_END){
+      hero.innerHTML='<div class="pad"><div class="kick">Mahalo</div><h3>What a trip. 🌴</h3>'+
+        '<div class="tdsub">Maui 2026 is a wrap — relive it on the Photo Wall.</div></div>';
+      body.innerHTML='';
+      return;
+    }
+    var dayEl=document.querySelector('.day[data-date="'+t+'"]');
+    var n=0; var all=[].slice.call(document.querySelectorAll('.day'));
+    all.forEach(function(d,i){ d.classList.toggle('isToday', d.dataset.date===t); if(d.dataset.date===t) n=i+1;
+      var h3=d.querySelector('.meta h3'); var fl=h3?h3.querySelector('.todayflag'):null; if(fl) fl.remove();
+      if(d.dataset.date===t&&h3){ var s=document.createElement('span'); s.className='todayflag'; s.textContent='TODAY'; h3.appendChild(s); } });
+    var title=dayEl?dayEl.querySelector('.meta h3').childNodes[0].textContent.trim():'Maui';
+    var dstr=fmtDay(t);
+    var chips='';
+    if(wx){ chips+='<span class="tdchip">'+wx.e+' '+wx.hi+'° / '+wx.lo+'°'+(wx.rain!=null?' · 💧'+wx.rain+'%':'')+'</span>'; }
+    if(wx&&wx.ss){ chips+='<span class="tdchip">🌇 Sunset '+fmtClock(wx.ss)+'</span>'; }
+    var td=tideStr(t); if(td){ chips+='<span class="tdchip">'+td+'</span>'; }
+    if(CABANA[t]){ chips+='<span class="tdchip">⛱️ '+CABANA[t]+'</span>'; }
+    hero.innerHTML='<div class="pad"><div class="kick">Day '+n+' of 8 · '+dstr+'</div>'+
+      '<h3>'+esc(title)+'</h3>'+
+      '<div class="tdchips">'+chips+'</div></div>';
+    var html='';
+    if(dayEl){ html+='<div class="tdcard"><h4>🗓️ Today’s plan</h4>'+dayEl.querySelector('.body').innerHTML+'</div>'; }
+    var din=DINFO[t];
+    if(din){ html+='<div class="tdcard tonight"><h4>'+din[0]+' Tonight: '+esc(din[1])+'</h4><div style="font-size:.9rem;color:var(--muted)">'+din[2]+'</div></div>'; }
+    body.innerHTML=html;
+  }
+  renderToday();
+  setInterval(renderToday, 10*60*1000);
 })();
 </script>
 </body>
